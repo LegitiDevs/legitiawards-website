@@ -1,0 +1,119 @@
+@font-face {
+    font-family: "MinecraftDefault";
+    src: url("/assets/font/MinecraftDefault-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "MinecraftDefault";
+    src: url("/assets/font/MinecraftDefault-Bold.ttf") format("truetype");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "MinecraftDefault";
+    src: url("/assets/font/MinecraftDefault-Italic.ttf") format("truetype");
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "MinecraftDefault";
+    src: url("/assets/font/MinecraftDefault-BoldItalic.ttf") format("truetype");
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "MinecraftFive";
+    src: url("/assets/font/MinecraftFive-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "MinecraftFive";
+    src: url("/assets/font/MinecraftFive-Bold.ttf") format("truetype");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "Minecraft-Tenv2";
+    src: url("/assets/font/Minecraft-Tenv2.ttf") format("truetype");
+}
+
+:root {
+    --dark-purple: #08030c;
+    --purple: #550285;
+    --accent-yellow-1: #ffd541;
+    --accent-yellow-2: #f9a31b;
+    --accent-yellow-3: #a34507;
+    --font-gradient-yellow-start: #fffffe;
+    --font-gradient-yellow-end: #fff703;
+}
+
+/*
+  Josh's Custom CSS Reset
+  https://www.joshwcomeau.com/css/custom-css-reset/
+*/
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+*:not(dialog) {
+    margin: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        interpolate-size: allow-keywords;
+    }
+}
+
+body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    overflow-wrap: break-word;
+}
+
+p {
+    text-wrap: pretty;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    text-wrap: balance;
+}
+
+#root,
+#__next {
+    isolation: isolate;
+}
