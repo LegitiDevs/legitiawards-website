@@ -1,0 +1,351 @@
+{
+	"$schema": "../results_schema.json",
+	"format_version": "1.0.0",
+	"display_name": "The 2nd Community LegitiAwards",
+	"id": "cla2",
+	"datetime": "2026-04-26T22:30:00.000Z",
+	"nominees": {
+		"battle_train": {
+			"type": "world",
+			"name": "Battle Train",
+			"owner": "Railroad Xing"
+		},
+		"scrap_survivors": {
+			"type": "world",
+			"name": "Scrap Survivors",
+			"owner": "Alixindria"
+		},
+		"new_ideas_inc": {
+			"type": "world",
+			"name": "New Ideas Inc.",
+			"owner": "Ragebird7200"
+		},
+		"block_fortress": {
+			"type": "world",
+			"name": "Block Fortress",
+			"owner": "visendim"
+		},
+		"ncc_arena": {
+			"type": "world",
+			"name": "NCC Arena",
+			"owner": "mmmmmaaaaaxxxxx"
+		},
+		"srs_amber": { "type": "world", "name": "SRS Amber", "owner": "NderHAM" },
+		"projectfight": {
+			"type": "world",
+			"name": "ProjectFight",
+			"owner": "Trplnr"
+		},
+		"night_shifts": {
+			"type": "world",
+			"name": "Night Shifts",
+			"owner": "hmmbarden"
+		},
+		"the_lobby": {
+			"type": "world",
+			"name": "The Lobby",
+			"owner": "Legitimoose Community"
+		},
+		"blocks_n_props": {
+			"type": "world",
+			"name": "Blocks 'n Props",
+			"owner": "Pqwp"
+		},
+		"schmoove_ii": {
+			"type": "world",
+			"name": "SCHMOOVE II",
+			"owner": "chopstickwater"
+		},
+		"chaos_box": {
+			"type": "world",
+			"name": "Chaos Box",
+			"owner": "strategist272"
+		},
+		"bootleg_blowout": {
+			"type": "world",
+			"name": "Bootleg Blowout",
+			"owner": "RedSyven"
+		},
+		"stare_at_a_brick_wall": {
+			"type": "world",
+			"name": "Stare at a Brick Wall",
+			"owner": "Trplnr"
+		},
+		"the_point_of_failure": {
+			"type": "world",
+			"name": "The Point of Failure",
+			"owner": "Squirrelify"
+		},
+		"mass_failure": {
+			"type": "world",
+			"name": "Mass Failure",
+			"owner": "The Massive Failures"
+		},
+		"factorybuilder": {
+			"type": "world",
+			"name": "FactoryBuilder",
+			"owner": "devilexe3"
+		},
+		"walking_sim": {
+			"type": "world",
+			"name": "Walking Sim",
+			"owner": "Tushka___"
+		},
+		"pantheon": { "type": "world", "name": "Pantheon", "owner": "HappyPacman" },
+		"polaroid_camera": {
+			"type": "world",
+			"name": "Polaroid Camera",
+			"owner": "Legitimoose"
+		},
+		"nes_emulator": {
+			"type": "world",
+			"name": "NES Emulator",
+			"owner": "GetCmdRolled"
+		},
+		"repair_extraordinaire": {
+			"type": "world",
+			"name": "Repair Extraordinaire",
+			"owner": "Railroad Xing (Team)"
+		},
+		"wild_west_wip": {
+			"type": "world",
+			"name": "Wild West WIP",
+			"owner": "Joellizzy"
+		},
+		"codename_fire": {
+			"type": "world",
+			"name": "Codename: Fire",
+			"owner": "Arvelyx"
+		},
+		"mechanical_fiasco": {
+			"type": "world",
+			"name": "Mechanical Fiasco",
+			"owner": "Toasted Brick Wall"
+		},
+		"tron": { "type": "world", "name": "TRON", "owner": "SukiManu" },
+		"projectendura": {
+			"type": "world",
+			"name": "ProjectEndura",
+			"owner": "CJDev"
+		},
+		"battle_build": {
+			"type": "world",
+			"name": "Battle Build",
+			"owner": "Joellizzy"
+		},
+		"altitude": { "type": "world", "name": "Altitude", "owner": "DerpKing11" },
+		"ghost_bosses_2": {
+			"type": "world",
+			"name": "Ghost Bosses 2",
+			"owner": "GhostScoutw"
+		},
+		"arvelyx": { "type": "player", "name": "Arvelyx" },
+		"hmmbarden": { "type": "player", "name": "hmmbarden" },
+		"greaful": { "type": "player", "name": "Greaful" },
+		"chopstickwater": { "type": "player", "name": "chopstickwater" },
+		"alixindria": { "type": "player", "name": "Alixindria" },
+		"nderham": { "type": "player", "name": "NderHAM" },
+		"1000hrcelebration": { "type": "player", "name": "1000hrcelebration" },
+		"i_am_dirt": { "type": "player", "name": "I_AM_DIRT" },
+		"nightstealer_00": { "type": "player", "name": "NightStealer_00" },
+		"dacommander31": { "type": "player", "name": "DaCommander31" },
+		"cjdev": { "type": "player", "name": "CJDev" },
+		"nnebes": { "type": "player", "name": "nnebes" },
+		"trplnr": { "type": "player", "name": "Trplnr" },
+		"railroad_xing": { "type": "team", "name": "Railroad Xing" },
+		"the_massive_failures": { "type": "team", "name": "The Massive Failures" },
+		"toasted_brick_wall": { "type": "team", "name": "Toasted Brick Wall" }
+	},
+	"winners": [
+		{
+			"category_name": "World of the Year",
+			"winner": "battle_train",
+			"nominees": [
+				"battle_train",
+				"scrap_survivors",
+				"new_ideas_inc",
+				"block_fortress"
+			]
+		},
+		{
+			"category_name": "Best in Innovation",
+			"winner": "ncc_arena",
+			"nominees": ["ncc_arena", "srs_amber", "projectfight", "night_shifts"]
+		},
+		{
+			"category_name": "Best in Aesthetics",
+			"winner": "the_lobby",
+			"nominees": ["srs_amber", "night_shifts", "the_lobby"]
+		},
+		{
+			"category_name": "Best in Fun",
+			"winner": "bootleg_blowout",
+			"nominees": [
+				"blocks_n_props",
+				"schmoove_ii",
+				"chaos_box",
+				"bootleg_blowout"
+			]
+		},
+		{
+			"category_name": "Best in Story",
+			"winner": "mass_failure",
+			"nominees": [
+				"stare_at_a_brick_wall",
+				"the_point_of_failure",
+				"mass_failure"
+			]
+		},
+		{
+			"category_name": "Best Simulator",
+			"winner": "factorybuilder",
+			"nominees": ["factorybuilder", "walking_sim", "stare_at_a_brick_wall"]
+		},
+		{
+			"category_name": "Best Fighting",
+			"winner": "block_fortress",
+			"nominees": [
+				"pantheon",
+				"block_fortress",
+				"bootleg_blowout",
+				"scrap_survivors",
+				"ncc_arena"
+			]
+		},
+		{
+			"category_name": "Best Experimental",
+			"winner": "polaroid_camera",
+			"nominees": ["polaroid_camera", "night_shifts", "nes_emulator"]
+		},
+		{
+			"category_name": "Best Game Direction",
+			"winner": "bootleg_blowout",
+			"nominees": [
+				"repair_extraordinaire",
+				"wild_west_wip",
+				"bootleg_blowout",
+				"schmoove_ii",
+				"codename_fire"
+			]
+		},
+		{
+			"category_name": "Best in Music",
+			"winner": "mass_failure",
+			"nominees": ["mass_failure", "chaos_box", "blocks_n_props", "walking_sim"]
+		},
+		{
+			"category_name": "Best in Audio Design",
+			"winner": "battle_train",
+			"nominees": [
+				"srs_amber",
+				"battle_train",
+				"repair_extraordinaire",
+				"mechanical_fiasco"
+			]
+		},
+		{
+			"category_name": "Best Data Pack Performance",
+			"winner": "block_fortress",
+			"nominees": ["block_fortress", "blocks_n_props", "tron"]
+		},
+		{
+			"category_name": "Best Data Pack Quality",
+			"winner": "codename_fire",
+			"nominees": ["codename_fire", "projectfight", "wild_west_wip"]
+		},
+		{
+			"category_name": "Best Resource Pack for Textures and Models",
+			"winner": "night_shifts",
+			"nominees": [
+				"scrap_survivors",
+				"night_shifts",
+				"projectfight",
+				"srs_amber"
+			]
+		},
+		{
+			"category_name": "Best Resource Pack for Shaders",
+			"winner": "srs_amber",
+			"nominees": ["srs_amber", "projectendura"]
+		},
+		{
+			"category_name": "Best Resource Pack for Audio",
+			"winner": "mass_failure",
+			"nominees": ["srs_amber", "mass_failure"]
+		},
+		{
+			"category_name": "Best Builds",
+			"winner": "the_lobby",
+			"nominees": ["new_ideas_inc", "battle_build", "altitude", "the_lobby"]
+		},
+		{
+			"category_name": "Most Anticipated Game",
+			"winner": "codename_fire",
+			"nominees": [
+				"codename_fire",
+				"wild_west_wip",
+				"ghost_bosses_2",
+				"projectfight"
+			]
+		},
+		{
+			"category_name": "Best Leader",
+			"winner": "arvelyx",
+			"nominees": ["arvelyx", "hmmbarden", "greaful"]
+		},
+		{
+			"category_name": "Best Solo Developer",
+			"winner": "nderham",
+			"nominees": ["hmmbarden", "chopstickwater", "alixindria", "nderham"]
+		},
+		{
+			"category_name": "Best Team",
+			"winner": "the_massive_failures",
+			"nominees": [
+				"the_massive_failures",
+				"railroad_xing",
+				"toasted_brick_wall"
+			]
+		},
+		{
+			"category_name": "Best Data Packer",
+			"winner": "hmmbarden",
+			"nominees": ["1000hrcelebration", "hmmbarden", "trplnr", "alixindria"]
+		},
+		{
+			"category_name": "Best in Functions",
+			"winner": "hmmbarden",
+			"nominees": ["hmmbarden", "i_am_dirt"]
+		},
+		{
+			"category_name": "Best in World Generation and Structures",
+			"winner": "nightstealer_00",
+			"nominees": ["nightstealer_00", "nderham", "dacommander31"]
+		},
+		{
+			"category_name": "Best Resource Packer",
+			"winner": "trplnr",
+			"nominees": ["trplnr", "hmmbarden", "nderham", "alixindria"]
+		},
+		{
+			"category_name": "Best in Texturing",
+			"winner": "trplnr",
+			"nominees": ["trplnr", "alixindria", "hmmbarden"]
+		},
+		{
+			"category_name": "Best in Modelling",
+			"winner": "trplnr",
+			"nominees": ["trplnr", "alixindria", "hmmbarden"]
+		},
+		{
+			"category_name": "Best in Shaders",
+			"winner": "nderham",
+			"nominees": ["nderham", "cjdev"]
+		},
+		{
+			"category_name": "Best in Sound Design",
+			"winner": "hmmbarden",
+			"nominees": ["nnebes", "dacommander31", "hmmbarden"]
+		}
+	]
+}

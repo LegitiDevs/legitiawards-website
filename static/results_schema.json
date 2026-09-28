@@ -1,0 +1,115 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://legitiawards.legiti.dev/results_schema.json",
+    "title": "Community LegitiAwards Results Schema",
+    "description": "A schema for compiling the results of a Community LegitiAwards event.",
+    "type": "object",
+    "properties": {
+        "format_version": {
+            "type": "string",
+            "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+        },
+        "display_name": {
+            "type": "string",
+            "description": "The name this result shows up as in user interfaces."
+        },
+        "id": {
+            "type": "string",
+            "description": "ID of this result."
+        },
+        "datetime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When this event happened expressed as an ISO date-time string"
+        },
+        "nominees": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/$defs/nominee"
+            },
+            "description": "List of all nominees."
+        },
+        "winners": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/winner"
+            },
+            "description": "List of all winners."
+        }
+    },
+    "required": ["format_version", "display_name", "id", "datetime", "nominees", "winners"],
+    "$defs": {
+        "nominee": {
+            "type": "object",
+            "oneOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "const": "world"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "The name this world shows up as in user interfaces."
+                        },
+                        "owner": {
+                            "type": "string",
+                            "description": "The owner of this world."
+                        }
+                    },
+                    "required": ["type", "name", "owner"]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "const": "player"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "The name this player shows up as in user interfaces."
+                        }
+                    },
+                    "required": ["type", "name"]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "const": "team"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "The name this team shows up as in user interfaces."
+                        }
+                    },
+                    "required": ["type", "name"]
+                }
+            ]
+        },
+        "winner": {
+            "type": "object",
+            "properties": {
+                "category_name": {
+                    "type": "string",
+                    "description": "The name of the category."
+                },
+                "winner": {
+                    "type": "string",
+                    "description": "An identifier pointing to the winning nominee."
+                },
+                "nominees": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "A list of identifiers pointing to nominees that didn't win."
+                }
+            },
+            "required": ["category_name", "winner", "nominees"]
+        }
+    }
+}
