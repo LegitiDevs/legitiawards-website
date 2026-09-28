@@ -1,5 +1,5 @@
 {
-    "$schema": "../results_schema.json",
+    "$schema": "https://legitiawards.legiti.dev/results_schema.json",
     "format_version": "1.0.0",
     "display_name": "The 2nd Community LegitiAwards",
     "id": "cla2",
