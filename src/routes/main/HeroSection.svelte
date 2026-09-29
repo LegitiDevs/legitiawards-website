@@ -32,12 +32,16 @@
         & img.hero-img {
             width: 45%;
             height: auto;
+
+            animation: 1s ease-in-out flyRight forwards;
         }
 
         & img.hero-title {
             width: 50%;
             height: auto;
             margin-right: 50px;
+
+            animation: 1s ease-in-out flyUp forwards;
         }
 
         @media (max-width: 800px) {
@@ -53,6 +57,28 @@
                 width: 80%;
                 margin-right: 0;
             }
+        }
+    }
+
+    @keyframes flyRight {
+        0% {
+            opacity: 0;
+            translate: -40px 0px;
+        }
+        100% {
+            opacity: 1;
+            translate: 0px 0px;
+        }
+    }
+
+    @keyframes flyUp {
+        0% {
+            opacity: 0;
+            translate: 0px 40px;
+        }
+        100% {
+            opacity: 1;
+            translate: 0px 0px;
         }
     }
 </style>

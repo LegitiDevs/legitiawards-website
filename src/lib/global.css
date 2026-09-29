@@ -38,6 +38,31 @@
     src: url("/assets/font/Minecraft-Tenv2.ttf") format("truetype");
 }
 
+@font-face {
+    font-family: "Poppins";
+    font-display: swap;
+    src: url("/assets/font/Poppins-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Poppins";
+    font-style: italic;
+    src: url("/assets/font/Poppins-Italic.ttf");
+}
+
+@font-face {
+    font-family: "Poppins";
+    font-weight: bold;
+    src: url("/assets/font/Poppins-Bold.ttf");
+}
+
+@font-face {
+    font-family: "Poppins";
+    font-weight: bold;
+    font-style: italic;
+    src: url("/assets/font/Poppins-BoldItalic.ttf");
+}
+
 :root {
     --dark-purple: #08030c;
     --purple: #550285;
