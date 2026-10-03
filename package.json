@@ -22,7 +22,8 @@
 		"vite": "^8.0.12"
 	},
 	"dependencies": {
-		"mongodb": "^7.7.0"
+		"mongodb": "^7.7.0",
+		"zod": "^4.6.5"
 	},
 	"imports": {
 		"#lib": "./src/lib/index.js",

@@ -1,15 +1,12 @@
-import { db } from "#lib/db.ts";
+import { adminCollection } from "#lib/db.ts";
+import type { AdminFlags } from "#lib/schemas/admin.ts";
 import { error } from "@sveltejs/kit";
 
 export async function POST({ request }: { request: Request }) {
-    try {
-        return Response.json(await request.json())
-    } catch {
-        throw error(400)
-    }
-}
+    const flags = await adminCollection.findOne({ key: "FLAGS" }) as AdminFlags;
+    const IS_NOMINATIONS_OPEN = flags?.["NOMINATIONS_OPEN"];
 
-export async function GET() {
-    const worlds = await db.collection("worlds").findOne({ world_uuid: "lobby" })
-    return Response.json(worlds)
+    if (!IS_NOMINATIONS_OPEN) return error(403, "Nominations are closed.");
+
+    return Response.json({ "_message": "yippe" })
 }

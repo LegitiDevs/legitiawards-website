@@ -11,6 +11,9 @@ importers:
       mongodb:
         specifier: ^7.7.0
         version: 7.7.0
+      zod:
+        specifier: ^4.6.5
+        version: 4.6.5
     devDependencies:
       '@sveltejs/adapter-auto':
         specifier: ^8.0.0
@@ -551,6 +554,9 @@ packages:
   zimmerframe@1.1.4:
     resolution: {integrity: sha512-B58NGBEoc8Y9MWWCQGl/gq9xBCe4IiKM0a2x7GZdQKOW5Exr8S1W24J6OgM1njK8xCRGvAJIL/MxXHf6SkmQKQ==}
 
+  zod@4.6.5:
+    resolution: {integrity: sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q==}
+
 snapshots:
 
   '@jridgewell/gen-mapping@0.3.13':
@@ -916,3 +922,5 @@ snapshots:
       webidl-conversions: 7.0.0
 
   zimmerframe@1.1.4: {}
+
+  zod@4.6.5: {}

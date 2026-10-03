@@ -11,4 +11,5 @@ if (DB_NAME == undefined) {
 
 export const client = new MongoClient(MONGODB_URI);
 export const db = client.db(DB_NAME);
-export const legitiawardsCollection = db.collection("legitiawards");
+export const nominationsCollection = db.collection("nominations");
+export const adminCollection = db.collection("admin");
