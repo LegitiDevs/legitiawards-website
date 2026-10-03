@@ -1,6 +1,6 @@
 <script>
-	import GoldHorizontalLine from "$lib/components/GoldHorizontalLine.svelte";
-	import LegitiDevsButton from "$lib/components/LegitiDevsButton.svelte";
+	import GoldHorizontalLine from "#lib/components/GoldHorizontalLine.svelte";
+	import LegitiDevsButton from "#lib/components/LegitiDevsButton.svelte";
 	import HeroSection from "./main/HeroSection.svelte";
 	import PastWinnersSection from "./main/PastWinnersSection.svelte";
 

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import DropdownButton from "$lib/components/DropdownButton.svelte";
-	import type { CommunityLegitiAwardsResultsSchema, Winner } from "$lib/types";
+	import DropdownButton from "#lib/components/DropdownButton.svelte";
+	import type { CommunityLegitiAwardsResultsSchema, Winner } from "#lib/types.d.ts";
 	import { slide } from "svelte/transition";
     
     type Props = {

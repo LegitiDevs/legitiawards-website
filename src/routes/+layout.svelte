@@ -1,7 +1,7 @@
 <script>
 	import { page } from '$app/state';
-	import Footer from '$lib/components/Footer.svelte';
-	import '$lib/global.css'
+	import Footer from '#lib/components/Footer.svelte';
+	import '#lib/global.css'
 
 	let { children } = $props();
 </script>

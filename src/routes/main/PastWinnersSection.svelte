@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import WinnerCard from "./WinnerCard.svelte";
-	import type { CommunityLegitiAwardsResultsSchema } from "$lib/types";
+	import type { CommunityLegitiAwardsResultsSchema } from "#lib/types.d.ts";
 
     // @ts-ignore
     let results: CommunityLegitiAwardsResultsSchema = $state({});
