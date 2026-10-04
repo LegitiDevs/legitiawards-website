@@ -1,18 +1,28 @@
 import { ADMIN_PASSWORD } from "$app/env/private";
-import { adminCollection } from "#lib/db.ts";
-import type { AdminFlags } from "#lib/schemas/admin.ts";
-import { error } from "@sveltejs/kit";
-import { withSchema } from "../utils";
+import { error, type RequestEvent } from "@sveltejs/kit";
+import { withSchema } from "#lib/utils/api.ts";
+import { getFlag } from "#lib/utils/admin.ts";
+import crypto from "node:crypto";
 
 /** Submits nominations */
-export async function POST({ request }: { request: Request }) {
-	const flags = (await adminCollection.findOne({ key: "FLAGS" })) as AdminFlags;
-	const IS_NOMINATIONS_OPEN = flags?.["NOMINATIONS_OPEN"];
+export const POST = withSchema(
+    {},
+    async ({ request, cookies, getClientAddress }) => {
+        if (!(await getFlag("NOMINATIONS_OPEN"))) return error(403, "Nominations are closed.");
 
-	if (!IS_NOMINATIONS_OPEN) return error(403, "Nominations are closed.");
+        const hasSubmitted = cookies.get("nominations.hasSubmitted") === "true";
+        const hashed_ip = crypto.hash("sha256", getClientAddress(), 'hex');
 
-	return Response.json({ _message: "yippe" });
-}
+        // First submit check - cookie check
+        if (hasSubmitted) { return error(409, "Already submitted") }
+
+        // Second submit check - see if hashed ip exists in DB.
+
+        cookies.set("nominations.hasSubmitted", "true")
+
+        return Response.json({ hashed_ip: crypto.hash("sha256", getClientAddress(), 'hex') });
+    }
+)
 
 /** ADMIN: Deletes a nomination submission */
 export const DELETE = withSchema({ password: ADMIN_PASSWORD }, async () => {
