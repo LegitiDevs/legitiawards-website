@@ -3,7 +3,9 @@ import * as z from "zod"
 
 const WorldUuidSchema = z.union([z.literal("lobby"), z.uuid()])
 
-export const WorldSchema = z.custom<string>(async v => {
+type WorldUuid = "lobby" | (string & {});
+
+export const WorldSchema = z.custom<WorldUuid>(async v => {
     if (v === "") { return false };
 
     const result = WorldUuidSchema.safeParse(v);
@@ -44,3 +46,5 @@ export const VotesSchema = z.object({
     "best_solo_developer": PlayerSchema,
     "best_team": z.string(),
 })
+
+export type Votes = z.infer<typeof VotesSchema>
