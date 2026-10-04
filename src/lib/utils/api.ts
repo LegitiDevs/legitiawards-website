@@ -46,7 +46,7 @@ export function withSchema<
                 return error(400, "Malformed JSON");
             }
 
-            const result = schema.body.safeParse(raw);
+            const result = await schema.body.safeParseAsync(raw);
             if (!result.success) return error(400, z.prettifyError(result.error))
             body = result.data;
         }
