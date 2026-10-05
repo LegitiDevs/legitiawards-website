@@ -6,6 +6,7 @@ import crypto from "node:crypto";
 import { nominationsCollection } from "#lib/db.ts";
 import { VotesSchema } from "#lib/schemas/voting.ts";
 
+
 /** Submits nominations */
 export const POST = withSchema(
     { body: VotesSchema },
@@ -21,22 +22,36 @@ export const POST = withSchema(
         const hashed_ip = crypto.hash("sha256", getClientAddress(), 'hex');
 
         // Check if they alr submitted by checking cookies or seeing if their ip is in the DB.
-        if (hasSubmitted || await nominationsCollection.findOne({ hashed_ip })) { 
+
+        if (hasSubmitted) { 
             return error(409, "Already submitted") 
         }
 
         cookies.set("nominations.hasSubmitted", "true")
 
-        return Response.json(body);
+        if ((await nominationsCollection.findOne({ hashed_ip })) != null) {
+            return error(409, "Already submitted");
+        }
+
+        // -- Submitting nominees
+
+        const insertResult = await nominationsCollection.insertOne({
+            ...body,
+            hashed_ip
+        })
+
+        const submittedNominees = await nominationsCollection.findOne(
+            { _id: insertResult.insertedId },
+            { projection: { _id: 0, hashed_ip: 0 } },
+        );
+
+        console.log(insertResult)
+
+        return Response.json(submittedNominees);
     }
 )
 
-/** ADMIN: Deletes a nomination submission */
-export const DELETE = withSchema({ password: ADMIN_PASSWORD }, async () => {
-	return Response.json("Not implemented.");
-});
-
 /** ADMIN: Gets nomination submissions */
 export const GET = withSchema({ password: ADMIN_PASSWORD }, async () => {
-	return Response.json("Not implemented.");
+	return Response.json(await nominationsCollection.find({}).toArray())
 });

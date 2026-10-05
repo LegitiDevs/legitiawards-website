@@ -52,7 +52,7 @@ export function withSchema<
         }
 
         if (schema.querystring) {
-            const result = schema.querystring.safeParse(
+            const result = await schema.querystring.safeParseAsync(
                 Object.fromEntries(event.url.searchParams),
             );
             if (!result.success) return error(400, z.prettifyError(result.error));
