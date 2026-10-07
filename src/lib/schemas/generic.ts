@@ -18,7 +18,8 @@ export const WorldSchema = z.custom<WorldUuid>(async v => {
         return false
     }
 }, {
-    error: (iss) => `World '${iss.input ?? ''}' not found.`
+    error: (iss) => `World '${iss.input ?? ''}' not found.`,
+    params: { label: "world" }
 })
 
 export const PlayerSchema = z.custom<string>(async v => {
@@ -36,7 +37,8 @@ export const PlayerSchema = z.custom<string>(async v => {
         return false
     }
 }, {
-    error: (iss) => `Player '${iss.input ?? ''}' not found.`
+    error: (iss) => `Player '${iss.input ?? ''}' not found.`,
+    params: { label: "player" }
 })
 
 export const ObjectIdSchema = z.string().regex(/[0-9a-fA-F]{24}/);
