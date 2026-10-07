@@ -8,18 +8,24 @@ type CategoryMetadata = {
 }
 
 export const GET = async () => {
-    const categoriesJson: {[k: string]: CategoryMetadata} = {};
+    const categoriesJson: {
+			order: string[];
+			categories: { [k: string]: CategoryMetadata };
+		} = {
+			...categoryRegistry.get(categories.cla2027) as { order: string[] },
+			categories: {},
+		};
 
     const schemaShape = categories.cla2027.shape;
     
     for (const [key, schema] of Object.entries(schemaShape)) {
-        categoriesJson[key] = { ...categoryRegistry.get(schema) } as CategoryMetadata;
+        categoriesJson.categories[key] = { ...categoryRegistry.get(schema) } as CategoryMetadata;
 
         if (schema instanceof z.ZodCustom) {
             // @ts-ignore
-            categoriesJson[key].type = schema.def.params["label"]
+            categoriesJson.categories[key].type = schema.def.params["label"]
         } else if (schema instanceof z.ZodString) {
-            categoriesJson[key].type = "any"
+            categoriesJson.categories[key].type = "any"
         } else {
             throw new Error("Unsupported type")
         }

@@ -1,5 +1,5 @@
 <script>
-	import GoldHorizontalLine from "#lib/components/GoldHorizontalLine.svelte";
+	import GoldLine from "#lib/components/GoldLine.svelte";
 	import LegitiDevsButton from "#lib/components/LegitiDevsButton.svelte";
 	import HeroSection from "./main/HeroSection.svelte";
 	import PastWinnersSection from "./main/PastWinnersSection.svelte";
@@ -8,7 +8,7 @@
 
 <LegitiDevsButton />
 <HeroSection />
-<GoldHorizontalLine />
+<GoldLine />
 <div class="bottom-section">
     <div class="event-description">
         <span>The BIGGEST awarding ceremony in the Legitimoose Minecraft server celebrating creators and their work.</span>
