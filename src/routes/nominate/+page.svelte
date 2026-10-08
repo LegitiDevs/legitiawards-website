@@ -2,6 +2,8 @@
 	import Footer from "#lib/components/Footer.svelte";
 	import GoldLine from "#lib/components/GoldLine.svelte";
 	import LegitiAwardsButton from "#lib/components/LegitiAwardsButton.svelte";
+	import type { Votes } from "#lib/schemas/voting.ts";
+	import { nominationsStore } from "#lib/stores/persistent.ts";
 	import { onMount } from "svelte";
 
     type CategoryMetadata = {
@@ -10,24 +12,36 @@
         description: string
     }
 
-    let isFetchingCategories = $state(true);
-    let categories: {
-        order: string[];
+    type Categories = {
+        order: (keyof Votes['categories'])[];
         categories: { [k: string]: CategoryMetadata };
-    } = $state({order: [], categories: {}});
+    }
 
-    let currentTitle = $state("");
-    let currentDescription = $state("");
+    let isFetchingCategories = $state(true);
+    let categories: Categories = $state({} as Categories);
+
+    let currentName = $derived(categories.order[nominationsStore.current.current_index]);
+    let currentCategory = $derived(categories.categories[currentName]);
+
+    let currentInput = $state("");
 
     onMount(async () => {
         const res = await fetch("/api/categories");
         categories = await res.json();
 
-        currentTitle = categories.categories[categories.order[0]].title
-        currentDescription = categories.categories[categories.order[0]].description
-
         isFetchingCategories = false;
     })
+
+    function setNomination() {
+        // todo: validate
+        nominationsStore.current.categories[currentName] = currentInput;
+        currentInput = "";
+    }
+
+    function handleButtonClick() {
+        setNomination();
+        nominationsStore.current.current_index++
+    }
 
 </script>
 
@@ -38,11 +52,42 @@
     {:else}
         <div class="category-info-container">
             <div class="category-info-wrapper">
-                <div class="category-title">{currentTitle}</div>
-                <div class="category-description">{currentDescription}</div>
+                <div class="category-title">{currentCategory.title}</div>
+                <div class="category-description">{currentCategory.description}</div>
             </div>
             <GoldLine orientation="vertical" />
-        </div>   
+        </div>  
+        <div class="input-container">
+            <input type="text" bind:value={currentInput} />
+            {#if currentInput.length > 0}
+                <button onclick={handleButtonClick}>Submit</button>
+            {/if}
+        </div> 
     {/if} 
 </div>
 <Footer />
+
+<style>
+    .main-section {
+        height: 100vh;
+        background-image: url('/assets/img/cyan_background.png');
+        background-position: center;
+        background-size: 100% auto;
+        background-repeat: repeat-y;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+
+    .category-info-container {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .category-info-wrapper, .input-container {
+        display: flex;
+        flex-direction: column;
+    }
+</style>
