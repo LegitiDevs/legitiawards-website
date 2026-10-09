@@ -2,8 +2,8 @@
 	import GoldLine from "#lib/components/GoldLine.svelte";
 	import LegitiDevsButton from "#lib/components/LegitiDevsButton.svelte";
 	import HeroSection from "./main/HeroSection.svelte";
+	import NominateButton from "./main/NominateButton.svelte";
 	import PastWinnersSection from "./main/PastWinnersSection.svelte";
-
 </script>
 
 <LegitiDevsButton />
@@ -16,6 +16,7 @@
     </div>
     <PastWinnersSection />
 </div>
+<NominateButton />
 
 <style>
     .bottom-section {

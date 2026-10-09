@@ -1,9 +1,22 @@
 <script>
+	import { onNavigate } from '$app/navigation';
 	import { page } from '$app/state';
 	import Footer from '#lib/components/Footer.svelte';
 	import '#lib/global.css'
 
 	let { children } = $props();
+
+
+	onNavigate((navigation) => {
+		if (!document.startViewTransition) return;
+
+		return new Promise((resolve) => {
+			document.startViewTransition(async () => {
+				resolve();
+				await navigation.complete;
+			});
+		});
+	});
 </script>
 
 <svelte:head>
