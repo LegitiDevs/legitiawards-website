@@ -5,9 +5,10 @@
 	import type { Votes } from "#lib/schemas/voting.ts";
 	import { nominationsStore } from "#lib/stores/persistent.ts";
 	import { onMount } from "svelte";
+	import SearchInput from "./SearchInput.svelte";
 
     type CategoryMetadata = {
-        type: string,
+        type: "world" | "player" | "any",
         title: string,
         description: string
     }
@@ -58,14 +59,13 @@
             <GoldLine orientation="vertical" />
         </div>  
         <div class="input-container">
-            <input type="text" bind:value={currentInput} />
+            <SearchInput type={currentCategory.type} bind:input_value={currentInput} />
             {#if currentInput.length > 0}
                 <button onclick={handleButtonClick}>Submit</button>
             {/if}
         </div> 
     {/if} 
 </div>
-<Footer />
 
 <style>
     .main-section {
