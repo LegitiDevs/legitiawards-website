@@ -35,8 +35,9 @@
         padding-inline: 10px;
         gap: 25px;
         color: white;
-        outline: 3px solid #050506;
+        border: 3px solid #050506;
         height: 60px;
+        flex: 0 0 auto;
 
         > * {
             display: flex;
