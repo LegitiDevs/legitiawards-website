@@ -62,38 +62,38 @@
             <GoldLine orientation="vertical" />
         </div>  
         <div class="input-container">
-            <SearchInput type={currentCategory.type} bind:input_value={currentInput} bind:search_results={searchResults} />
-            {#if searchResults}
-            {#if searchResults.loading}
-                <span>Loading...</span>
-            {:else if searchResults.error}
-                <span>An error occured: {searchResults.error.message}</span>
-            {:else}
-                {#each searchResults.current ?? [] as value}
-                    {#if currentCategory.type == "world"}
-                        <SuggestionBox 
-                            title={value.name}
-                            subtitle={value.owner_name}
-                            icon={`https://raw.githubusercontent.com/jacobsjo/mcicons/refs/heads/icons/item/${value.icon}.png`}
-                            onclick={() => {console.log(`Selected ${value.name} (${value.world_uuid})`); handleButtonClick(value.world_uuid)}}
-                        />
-                    {:else if currentCategory.type == "player"}
-                        <SuggestionBox 
-                            title={value.name}
-                            icon={`https://mc-heads.net/head/${value.uuid}/left`}
-                            onclick={() => {console.log(`Selected ${value.name} (${value.uuid})`); handleButtonClick(value.uuid)}}
-                        />
-                    {:else if currentCategory.type == "any"}
-                        <SuggestionBox 
-                            title={value}
-                            onclick={() => {console.log(`Selected ${value}`); handleButtonClick(value)}}
-                        />
-                    {:else}
-                        <span>Unsupported category type.</span>
-                    {/if}
-                {/each}
-            {/if}
-            {/if}
+            <div class="search-container">
+                <SearchInput type={currentCategory.type} bind:input_value={currentInput} bind:search_results={searchResults} />
+                {#if searchResults}
+                {#if searchResults.loading}
+                    <span>Loading...</span>
+                {:else if searchResults.error}
+                    <span>An error occured: {searchResults.error.message}</span>
+                {:else}
+                    {#each searchResults.current ?? [] as value}
+                        {#if currentCategory.type == "world" && value?.icon}
+                            <SuggestionBox 
+                                title={value.name}
+                                subtitle={`by ${value.owner_name}`}
+                                icon={`https://raw.githubusercontent.com/jacobsjo/mcicons/refs/heads/icons/item/${value.icon.replace("minecraft:", "")}.png`}
+                                onclick={() => {console.log(`Selected ${value.name} (${value.world_uuid})`); handleButtonClick(value.world_uuid)}}
+                            />
+                        {:else if currentCategory.type == "player" && value?.uuid}
+                            <SuggestionBox 
+                                title={value.name}
+                                icon={`https://mc-heads.net/head/${value.uuid}/left`}
+                                onclick={() => {console.log(`Selected ${value.name} (${value.uuid})`); handleButtonClick(value.uuid)}}
+                            />
+                        {:else if currentCategory.type == "any" && typeof value === "string"}
+                            <SuggestionBox 
+                                title={value}
+                                onclick={() => {console.log(`Selected ${value}`); handleButtonClick(value)}}
+                            />
+                        {/if}
+                    {/each}
+                {/if}
+                {/if}
+            </div>
         </div> 
     {/if} 
 </div>
@@ -108,8 +108,13 @@
 
         display: flex;
         flex-direction: row;
-        justify-content: space-evenly;
         align-items: center;
+
+        > div {
+            flex: 1;
+            justify-content: center;
+            align-items: center;
+        }
     }
 
     .category-info-container {
@@ -120,5 +125,12 @@
     .category-info-wrapper, .input-container {
         display: flex;
         flex-direction: column;
+    }
+
+    .search-container {
+        display: flex;
+        flex-direction: column;
+        width: 60%;
+        gap: 10px;
     }
 </style>
