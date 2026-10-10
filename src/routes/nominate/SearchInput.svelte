@@ -5,26 +5,26 @@
     type Props = {
         type: "world" | "player" | "any";
         input_value: string,
-        returned_value?: any
+        search_results?: any
     }
 
-    let { type = "any", input_value = $bindable(), returned_value = $bindable() }: Props = $props();
+    let { type = "any", input_value = $bindable(), search_results = $bindable() }: Props = $props();
 
     const WORLD_UUID_REGEX = /^[0-9a-f]{8}(-?)(?:[0-9a-f]{4}\1){3}[0-9a-f]{12}$|^lobby$/i
     const AUTOCOMPLETE_LIMIT = 15;
 
-    let autocompleteValues = resource(
+    search_results = resource(
         () => input_value.trim(),
         async (value) => {
             if (value.length == 0) return []
             switch (type) {
                 case "world": {
                     if (WORLD_UUID_REGEX.test(value)) {
-                        const res = await fetch(`${LEGITIMOOSE_API}/v4/worlds/${encodeURIComponent(value)}?project=world_uuid,name,owner_name&limit=${AUTOCOMPLETE_LIMIT}`);
+                        const res = await fetch(`${LEGITIMOOSE_API}/v4/worlds/${encodeURIComponent(value)}?project=world_uuid,name,owner_name,icon&limit=${AUTOCOMPLETE_LIMIT}`);
                         return [await res.json()];
                     }
 
-                    const url = new URL(`/v4/worlds/search?project=world_uuid,name,owner_name&limit=${AUTOCOMPLETE_LIMIT}`, LEGITIMOOSE_API)
+                    const url = new URL(`/v4/worlds/search?project=world_uuid,name,owner_name,icon&limit=${AUTOCOMPLETE_LIMIT}`, LEGITIMOOSE_API)
                     url.searchParams.append("query", value)
 
                     const res = await fetch(url);
@@ -67,14 +67,3 @@
 </script>
 
 <input bind:value={input_value} />
-{#if autocompleteValues.loading}
-    <span>Loading...</span>
-{:else if autocompleteValues.error}
-    <span>An error occured: {autocompleteValues.error.message}</span>
-{:else}
-    <ul>
-        {#each autocompleteValues.current ?? [] as value }
-            <li>{JSON.stringify(value)}</li>
-        {/each}
-    </ul>
-{/if}

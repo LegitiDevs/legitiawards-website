@@ -6,6 +6,8 @@
 	import { nominationsStore } from "#lib/stores/persistent.ts";
 	import { onMount } from "svelte";
 	import SearchInput from "./SearchInput.svelte";
+	import type { ResourceReturn } from "runed";
+	import SuggestionBox from "./SuggestionBox.svelte";
 
     type CategoryMetadata = {
         type: "world" | "player" | "any",
@@ -25,6 +27,7 @@
     let currentCategory = $derived(categories.categories[currentName]);
 
     let currentInput = $state("");
+    let searchResults = $state<ResourceReturn<any>>();
 
     onMount(async () => {
         const res = await fetch("/api/categories");
@@ -33,14 +36,14 @@
         isFetchingCategories = false;
     })
 
-    function setNomination() {
+    function setNomination(value: string) {
         // todo: validate
-        nominationsStore.current.categories[currentName] = currentInput;
+        nominationsStore.current.categories[currentName] = value;
         currentInput = "";
     }
 
-    function handleButtonClick() {
-        setNomination();
+    function handleButtonClick(value: string) {
+        setNomination(value);
         nominationsStore.current.current_index++
     }
 
@@ -59,9 +62,37 @@
             <GoldLine orientation="vertical" />
         </div>  
         <div class="input-container">
-            <SearchInput type={currentCategory.type} bind:input_value={currentInput} />
-            {#if currentInput.length > 0}
-                <button onclick={handleButtonClick}>Submit</button>
+            <SearchInput type={currentCategory.type} bind:input_value={currentInput} bind:search_results={searchResults} />
+            {#if searchResults}
+            {#if searchResults.loading}
+                <span>Loading...</span>
+            {:else if searchResults.error}
+                <span>An error occured: {searchResults.error.message}</span>
+            {:else}
+                {#each searchResults.current ?? [] as value}
+                    {#if currentCategory.type == "world"}
+                        <SuggestionBox 
+                            title={value.name}
+                            subtitle={value.owner_name}
+                            icon={`https://raw.githubusercontent.com/jacobsjo/mcicons/refs/heads/icons/item/${value.icon}.png`}
+                            onclick={() => {console.log(`Selected ${value.name} (${value.world_uuid})`); handleButtonClick(value.world_uuid)}}
+                        />
+                    {:else if currentCategory.type == "player"}
+                        <SuggestionBox 
+                            title={value.name}
+                            icon={`https://mc-heads.net/head/${value.uuid}/left`}
+                            onclick={() => {console.log(`Selected ${value.name} (${value.uuid})`); handleButtonClick(value.uuid)}}
+                        />
+                    {:else if currentCategory.type == "any"}
+                        <SuggestionBox 
+                            title={value}
+                            onclick={() => {console.log(`Selected ${value}`); handleButtonClick(value)}}
+                        />
+                    {:else}
+                        <span>Unsupported category type.</span>
+                    {/if}
+                {/each}
+            {/if}
             {/if}
         </div> 
     {/if} 
