@@ -81,4 +81,9 @@
             background-image: linear-gradient(to right, #13131400, #131314);
         }
     }
+
+    .suggestion-box:hover {
+        background-color: #1a1a1b;
+        border-color: #0b0b0c;
+    }
 </style>
