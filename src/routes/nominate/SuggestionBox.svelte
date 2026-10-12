@@ -39,6 +39,8 @@
         height: 60px;
         flex: 0 0 auto;
 
+        cursor: pointer;
+
         > * {
             display: flex;
             flex-direction: column;
