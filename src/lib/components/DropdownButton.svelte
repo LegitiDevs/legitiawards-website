@@ -29,6 +29,7 @@
 
         &:hover {
             opacity: 1;
+            cursor: pointer;
         }
 
         &.toggled {
