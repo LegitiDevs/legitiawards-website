@@ -104,12 +104,15 @@
 
                 color: #4effb8;
                 text-shadow: 0 0.8vw #05120d;
+
+                padding-bottom: 1.25vw;
             }
 
             .category-description {
                 font-family: 'MinecraftDefault', 'Cascadia Code';
                 font-size: 1.8vw;
                 color: white;
+                line-height: 2vw;
             }
         }
     }
