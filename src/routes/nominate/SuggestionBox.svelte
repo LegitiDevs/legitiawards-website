@@ -41,6 +41,8 @@
 
         cursor: pointer;
 
+        transition: background-color 0.1s ease, border-color 0.1s ease, scale 0.2s ease;
+
         > * {
             display: flex;
             flex-direction: column;
@@ -85,5 +87,6 @@
     .suggestion-box:hover {
         background-color: #1a1a1b;
         border-color: #0b0b0c;
+        scale: 1.05
     }
 </style>

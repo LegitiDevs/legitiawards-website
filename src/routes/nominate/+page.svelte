@@ -40,7 +40,7 @@
     let searchValue = $state("");
 
     const WORLD_UUID_REGEX = /^[0-9a-f]{8}(-?)(?:[0-9a-f]{4}\1){3}[0-9a-f]{12}$|^lobby$/i
-    const AUTOCOMPLETE_LIMIT = 15;
+    const AUTOCOMPLETE_LIMIT = 10;
  
     const searchResults = resource(
         () => searchValue.trim(),
@@ -68,7 +68,7 @@
 
                         return {
                             name: v.name,
-                            subtitle: v.owner_name,
+                            subtitle: `by ${v.owner_name}`,
                             uuid: v.world_uuid,
                             icon
                         }
@@ -131,7 +131,7 @@
 <LegitiAwardsButton />
 <div class="main-section">
     {#if isFetchingCategories}
-    <span>...</span>
+        <span>...</span>
     {:else if currentIndex < categories.order.length}
         <div class="category-info-container">
             <div class="category-info-wrapper">
@@ -142,28 +142,32 @@
         <GoldLine orientation="vertical" thickness="10px" />
         <div class="input-container">
             {#if nominationVotes[currentName]}
-                <PickedNomineeVisual 
-                    title={nominationVotes[currentName]?.name}
-                    subtitle={nominationVotes[currentName]?.subtitle}
-                    icon={nominationVotes[currentName]?.icon}
-                />
+                {#key currentIndex}
+                    <PickedNomineeVisual 
+                        title={nominationVotes[currentName]?.name}
+                        subtitle={nominationVotes[currentName]?.subtitle}
+                        icon={nominationVotes[currentName]?.icon}
+                    />
+                {/key}
             {/if}
             <div class="picker-container">
                 <SearchInput bind:value={searchValue} />
-                {#if searchResults.loading}
-                    <span>Loading...</span>
-                {:else if searchResults.error}
-                    <span>An error occured: {searchResults.error.message}</span>
-                {:else}
-                    {#each searchResults.current ?? [] as value}
-                        <SuggestionBox
-                            title={value?.name}
-                            subtitle={value?.subtitle}
-                            icon={value?.icon}
-                            onclick={() => submitNomination(value)}
-                        />
-                    {/each}
-                {/if}
+                <div class="search-container">
+                    {#if searchResults.loading}
+                        <span>Loading...</span>
+                    {:else if searchResults.error}
+                        <span>An error occured: {searchResults.error.message}</span>
+                    {:else}
+                        {#each searchResults.current ?? [] as value}
+                            <SuggestionBox
+                                title={value?.name}
+                                subtitle={value?.subtitle}
+                                icon={value?.icon}
+                                onclick={() => submitNomination(value)}
+                            />
+                        {/each}
+                    {/if}
+                </div>
             </div>
         </div>
         {#if currentIndex != 0}
@@ -173,7 +177,18 @@
             <button class="arrows forward-arrow" onclick={() => currentIndex++}>&rarr;</button>
         {/if}
     {:else}
-        <span>done voting</span>
+        <div class="summary-container">
+            <p>You nominated:</p>
+            {#each categories.order as categoryName}
+                <div class="left">
+                    <span>{categories.categories[categoryName].title}</span>
+                </div>
+                <div class="right">
+                    <span>{nominationVotes[categoryName].name}</span>
+                </div>
+            {/each}
+            
+        </div>
     {/if} 
 </div>
 
@@ -235,35 +250,52 @@
     .category-info-wrapper, .input-container {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 50px;
     }
 
     .picker-container {
         display: flex;
         flex-direction: column;
-        width: 50%;
-        padding: 10px;
+        width: 70%;
         gap: 10px;
-        
-        max-height: 400px;
-        overflow-y: scroll;
 
-        scroll-behavior: smooth;
-        scrollbar-color: #131314 transparent;
-        scrollbar-width: none;
-        ::-webkit-scrollbar-button {
-            display: none !important;
-        }
-        ::-webkit-scrollbar-thumb {
-            border-radius: 0 !important;
+        .search-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 5px;
+            padding: 12px;
+
+            max-height: 400px;
+            overflow-y: scroll;
+            scroll-behavior: smooth;
+            scrollbar-color: #131314 transparent;
+            scrollbar-width: none;
+
+            mask-image: linear-gradient(to bottom, rgb(0, 0, 0, 0.75) 0%, black 10%, black 90%, rgb(0, 0, 0, 0.5) 100%);
         }
     }
 
     .arrows {
+        all: unset;
+
         position: absolute;
         top: 50%;
         translate: 0 -50%;
+        color: white;
+
+        animation: fadeIn 0.3s ease-in both;
+
         &.back-arrow { left: 1rem; }
         &.forward-arrow { right: 1rem; }
+    }
+
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
     }
 </style>
