@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { LEGITIMOOSE_API, PLAYERDB_MC } from "#lib/constants.ts";
+    import { CURRENT_EVENT, LEGITIMOOSE_API, PLAYERDB_MC } from "#lib/constants.ts";
 	import GoldLine from "#lib/components/GoldLine.svelte";
 	import LegitiAwardsButton from "#lib/components/LegitiAwardsButton.svelte";
 	import type { Votes } from "#lib/schemas/voting.ts";
@@ -8,7 +8,6 @@
 	import PickedNomineeVisual from "./PickedNomineeVisual.svelte";
 	import SuggestionBox from "./SuggestionBox.svelte";
     import { resource } from "runed";
-	import { redirect } from "@sveltejs/kit";
  
     type CategoryMetadata = {
         type: "world" | "player" | "any",
@@ -121,10 +120,35 @@
 
     let nominationVotes: Partial<{[k in keyof Votes['categories']]: any}> = $state({});
 
-    function submitNomination(nominationInfo: any) {
+    function setNomination(nominationInfo: any) {
         nominationVotes[currentName] = nominationInfo;
         searchValue = "";
         searchResults.mutate([])
+    }
+
+    function prevPage() {
+        searchValue = "";
+        searchResults.mutate([]);
+        currentIndex--
+    }
+
+    function nextPage() {
+        searchValue = "";
+        searchResults.mutate([]);
+        currentIndex++
+    }
+
+    // --------------------------------------------------
+
+    function submitNominations() {
+        const nominationVotesToSend = {
+            event_id: CURRENT_EVENT,
+            categories: Object.fromEntries(
+                Object.entries(nominationVotes).map(([k, v]) => [k, v.uuid])
+            )
+        }
+
+        console.log(nominationVotesToSend)
     }
 </script>
  
@@ -163,7 +187,7 @@
                                 title={value?.name}
                                 subtitle={value?.subtitle}
                                 icon={value?.icon}
-                                onclick={() => submitNomination(value)}
+                                onclick={() => setNomination(value)}
                             />
                         {/each}
                     {/if}
@@ -171,23 +195,24 @@
             </div>
         </div>
         {#if currentIndex != 0}
-        <button class="arrows back-arrow" onclick={() => currentIndex--}>&larr;</button>
+            <button class="arrows back-arrow" onclick={prevPage}>&larr;</button>
         {/if}
         {#if nominationVotes[currentName]}
-            <button class="arrows forward-arrow" onclick={() => currentIndex++}>&rarr;</button>
+            <button class="arrows forward-arrow" onclick={nextPage}>&rarr;</button>
         {/if}
     {:else}
+        {#if currentIndex != 0}
+            <button class="arrows back-arrow" onclick={prevPage}>&larr;</button>
+        {/if}
         <div class="summary-container">
             <p>You nominated:</p>
-            {#each categories.order as categoryName}
-                <div class="left">
-                    <span>{categories.categories[categoryName].title}</span>
-                </div>
-                <div class="right">
-                    <span>{nominationVotes[categoryName].name}</span>
-                </div>
-            {/each}
-            
+            <div class="nomination-list-container">
+                {#each categories.order as categoryName}
+                    <span class="title">{categories.categories[categoryName].title}</span>
+                    <span class="name">{nominationVotes[categoryName].name}</span>
+                {/each}
+            </div>
+            <button class="submit-button" onclick={submitNominations}>Submit</button>
         </div>
     {/if} 
 </div>
@@ -273,6 +298,31 @@
             scrollbar-width: none;
 
             mask-image: linear-gradient(to bottom, rgb(0, 0, 0, 0.75) 0%, black 10%, black 90%, rgb(0, 0, 0, 0.5) 100%);
+        }
+    }
+
+    .summary-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 50px;
+
+        font-family: 'MinecraftDefault';
+        color: white;
+        font-size: 2em;
+        line-height: normal;
+
+        .nomination-list-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: center;
+
+            .title {
+                justify-self: end;
+                font-family: 'MinecraftTen';
+            }
         }
     }
 
