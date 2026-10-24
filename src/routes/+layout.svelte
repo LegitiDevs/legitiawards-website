@@ -2,10 +2,9 @@
 	import { onNavigate } from '$app/navigation';
 	import { page } from '$app/state';
 	import Footer from '#lib/components/Footer.svelte';
-	import '#lib/global.css'
+	import '#lib/global.css';
 
 	let { children } = $props();
-
 
 	onNavigate((navigation) => {
 		if (!document.startViewTransition) return;
