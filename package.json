@@ -23,7 +23,7 @@
 	},
 	"dependencies": {
 		"mongodb": "^7.7.0",
-		"runed": "^0.37.1",
+		"runed": "^0.38.0",
 		"zod": "^4.6.7"
 	},
 	"imports": {

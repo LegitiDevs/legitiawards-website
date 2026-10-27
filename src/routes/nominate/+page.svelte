@@ -44,7 +44,7 @@
 
     const WORLD_UUID_REGEX = /^[0-9a-f]{8}(-?)(?:[0-9a-f]{4}\1){3}[0-9a-f]{12}$|^lobby$/i
     const AUTOCOMPLETE_LIMIT = 10;
- 
+
     const searchResults = resource(
         () => searchValue.trim(),
         async (value) => {
