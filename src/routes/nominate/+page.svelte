@@ -8,8 +8,9 @@
 	import PickedNomineeVisual from "./PickedNomineeVisual.svelte";
 	import SuggestionBox from "./SuggestionBox.svelte";
     import { resource } from "runed";
+	import { refreshAll } from "$app/navigation";
 
-    type PageState = "loading" | "voting" | "summary" | "submitting";
+    type PageState = "loading" | "voting" | "summary" | "submitting" | "error" | "success";
     let pageState = $state<PageState>("loading");
 
     //-------------------------------------------------- DATA SETUP
@@ -150,7 +151,12 @@
 
     // -------------------------------------------------- SUBMITTING LOGIC
 
-    function submitNominations() {
+    let submitError = $state<{
+        status: number
+        json: any | null
+    }>({ status: -1, json: null });
+
+    async function submitNominations() {
         const nominationVotesToSend = {
             event_id: CURRENT_EVENT,
             categories: Object.fromEntries(
@@ -158,7 +164,31 @@
             )
         }
 
-        console.log(nominationVotesToSend)
+        const submitRes = await fetch('/api/nominations', {
+            method: 'POST',
+            body: JSON.stringify(nominationVotesToSend)
+        })
+
+        // Something went wrong, show error page or refresh to show updated info.
+        if (!submitRes.ok) {
+            // Nominations closed or already submitted.
+            if (submitRes.status == 403 || submitRes.status == 409) {
+                await refreshAll();
+                return;
+            }
+
+            const hasJson = submitRes.headers.get('content-type')?.includes('application/json');
+            submitError = {
+                status: submitRes.status,
+                json: hasJson ? await submitRes.json() : null
+            }
+
+            pageState = "error";
+            return;
+        }
+
+        // everything went well, show success screen
+        pageState = "success";
     }
 </script>
  
@@ -223,6 +253,14 @@
         </div>
         <button class="submit-button" onclick={submitNominations}>Submit</button>
     </div>
+{:else if pageState == "success"}
+    <span>thanks for voting tysm!!!</span>
+{:else if pageState == "error"}
+    <h1>Something went wrong &lpar;</h1>
+    <h2>{submitError.status}</h2>
+    {#if submitError.json != null}
+        <span>{submitError.json}</span>
+    {/if}
 {/if} 
 </div>
 

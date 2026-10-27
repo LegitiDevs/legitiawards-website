@@ -6,10 +6,6 @@ export const prerender = false;
 export const load: ServerLoad = async ({ cookies, fetch }) => {
   const flags: AdminFlags = await (await fetch("/api/flags")).json();
   const hasSubmitted = cookies.get("nominations.hasSubmitted") === "true";
-  
-  console.log("-----")
-  console.log(cookies.get("nominations.hasSubmitted"))
-  console.log(flags)
 
   if (!flags["NOMINATIONS_OPEN"]) {
     error(403, "Nominations are closed.")
