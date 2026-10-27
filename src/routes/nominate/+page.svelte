@@ -8,6 +8,11 @@
 	import PickedNomineeVisual from "./PickedNomineeVisual.svelte";
 	import SuggestionBox from "./SuggestionBox.svelte";
     import { resource } from "runed";
+
+    type PageState = "loading" | "voting" | "summary" | "submitting";
+    let pageState = $state<PageState>("loading");
+
+    //-------------------------------------------------- DATA SETUP
  
     type CategoryMetadata = {
         type: "world" | "player" | "any",
@@ -20,7 +25,6 @@
         categories: { [k: string]: CategoryMetadata };
     }
  
-    let isFetchingCategories = $state(true);
     let categories: Categories = $state({} as Categories);
     
     let currentIndex = $state(0);
@@ -31,10 +35,10 @@
         const res = await fetch("/api/categories");
         categories = await res.json();
  
-        isFetchingCategories = false;
+        pageState = "voting"
     })
 
-    //--------------------------------------------------
+    //-------------------------------------------------- VOTING LOGIC
 
     let searchValue = $state("");
 
@@ -116,8 +120,6 @@
         }
     )
 
-    //--------------------------------------------------
-
     let nominationVotes: Partial<{[k in keyof Votes['categories']]: any}> = $state({});
 
     function setNomination(nominationInfo: any) {
@@ -126,19 +128,27 @@
         searchResults.mutate([])
     }
 
-    function prevPage() {
+    function switchPage(pageIndex: number, useDelta: boolean = true) {
         searchValue = "";
         searchResults.mutate([]);
-        currentIndex--
+
+        const newIndex = useDelta ? currentIndex + pageIndex : pageIndex
+
+        if (newIndex < 0) { 
+            // out of bounds
+            throw new RangeError("Cannot switch page: delta puts index out of bounds.") 
+        } else if (newIndex < categories.order.length) {
+            // in voting page
+            pageState = "voting";
+            currentIndex = newIndex;
+        } else if (newIndex >= categories.order.length) {
+            // past voting page, go to summary
+            pageState = "summary";
+            currentIndex = categories.order.length - 1;
+        }
     }
 
-    function nextPage() {
-        searchValue = "";
-        searchResults.mutate([]);
-        currentIndex++
-    }
-
-    // --------------------------------------------------
+    // -------------------------------------------------- SUBMITTING LOGIC
 
     function submitNominations() {
         const nominationVotesToSend = {
@@ -154,67 +164,66 @@
  
 <LegitiAwardsButton />
 <div class="main-section">
-    {#if isFetchingCategories}
-        <span>...</span>
-    {:else if currentIndex < categories.order.length}
-        <div class="category-info-container">
-            <div class="category-info-wrapper">
-                <div class="category-title">{currentCategory.title}</div>
-                <div class="category-description">{currentCategory.description}</div>
-            </div>
-        </div>  
-        <GoldLine orientation="vertical" thickness="10px" />
-        <div class="input-container">
-            {#if nominationVotes[currentName]}
-                {#key currentIndex}
-                    <PickedNomineeVisual 
-                        title={nominationVotes[currentName]?.name}
-                        subtitle={nominationVotes[currentName]?.subtitle}
-                        icon={nominationVotes[currentName]?.icon}
-                    />
-                {/key}
-            {/if}
-            <div class="picker-container">
-                <SearchInput bind:value={searchValue} />
-                <div class="search-container">
-                    {#if searchResults.loading}
-                        <span>Loading...</span>
-                    {:else if searchResults.error}
-                        <span>An error occured: {searchResults.error.message}</span>
-                    {:else}
-                        {#each searchResults.current ?? [] as value}
-                            <SuggestionBox
-                                title={value?.name}
-                                subtitle={value?.subtitle}
-                                icon={value?.icon}
-                                onclick={() => setNomination(value)}
-                            />
-                        {/each}
-                    {/if}
-                </div>
-            </div>
+{#if pageState == "loading"}
+    <span>...</span>
+{:else if pageState == "voting"}
+    <div class="category-info-container">
+        <div class="category-info-wrapper">
+            <div class="category-title">{currentCategory.title}</div>
+            <div class="category-description">{currentCategory.description}</div>
         </div>
-        {#if currentIndex != 0}
-            <button class="arrows back-arrow" onclick={prevPage}>&larr;</button>
-        {/if}
+    </div>  
+    <GoldLine orientation="vertical" thickness="10px" />
+    <div class="input-container">
         {#if nominationVotes[currentName]}
-            <button class="arrows forward-arrow" onclick={nextPage}>&rarr;</button>
+            {#key currentIndex}
+                <PickedNomineeVisual 
+                    title={nominationVotes[currentName]?.name}
+                    subtitle={nominationVotes[currentName]?.subtitle}
+                    icon={nominationVotes[currentName]?.icon}
+                />
+            {/key}
         {/if}
-    {:else}
-        {#if currentIndex != 0}
-            <button class="arrows back-arrow" onclick={prevPage}>&larr;</button>
-        {/if}
-        <div class="summary-container">
-            <p>You nominated:</p>
-            <div class="nomination-list-container">
-                {#each categories.order as categoryName}
-                    <span class="title">{categories.categories[categoryName].title}</span>
-                    <span class="name">{nominationVotes[categoryName].name}</span>
-                {/each}
+        <div class="picker-container">
+            <SearchInput bind:value={searchValue} />
+            <div class="search-container">
+                {#if searchResults.loading}
+                    <span>Loading...</span>
+                {:else if searchResults.error}
+                    <span>An error occured: {searchResults.error.message}</span>
+                {:else}
+                    {#each searchResults.current ?? [] as value}
+                        <SuggestionBox
+                            title={value?.name}
+                            subtitle={value?.subtitle}
+                            icon={value?.icon}
+                            onclick={() => setNomination(value)}
+                        />
+                    {/each}
+                {/if}
             </div>
-            <button class="submit-button" onclick={submitNominations}>Submit</button>
         </div>
-    {/if} 
+    </div>
+    {#if currentIndex != 0}
+        <button class="arrows back-arrow" onclick={() => switchPage(-1)}>&larr;</button>
+    {/if}
+    {#if nominationVotes[currentName]}
+        <button class="arrows forward-arrow" onclick={() => switchPage(1)}>&rarr;</button>
+    {/if}
+{:else if pageState == "summary"}
+    <button class="arrows back-arrow" onclick={() => switchPage(-1)}>&larr;</button>
+
+    <div class="summary-container">
+        <p>You nominated:</p>
+        <div class="nomination-list-container">
+            {#each categories.order as categoryName}
+                <span class="title">{categories.categories[categoryName].title}</span>
+                <span class="name">{nominationVotes[categoryName].name}</span>
+            {/each}
+        </div>
+        <button class="submit-button" onclick={submitNominations}>Submit</button>
+    </div>
+{/if} 
 </div>
 
 <style>
