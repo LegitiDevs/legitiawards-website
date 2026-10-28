@@ -1,3 +1,24 @@
+:root {
+    --dark-purple: #08030c;
+    --purple: #550285;
+    --accent-yellow-1: #ffd541;
+    --accent-yellow-2: #f9a31b;
+    --accent-yellow-3: #a34507;
+    --font-gradient-yellow-start: #fffffe;
+    --font-gradient-yellow-end: #fff703;
+}
+
+.lc-root-container {
+    --color-primary: var(--purple);
+    --color-surface-100: transparent;
+    --color-surface-200: var(--dark-purple);
+    --color-surface-300: var(--dark-purple);
+    --color-surface-content: var(--purple);
+    --tw-gradient-from: var(--accent-yellow-1);
+    --tw-gradient-to: var(--accent-yellow-3);
+    font-family: 'Poppins';
+}
+
 @font-face {
     font-family: "MinecraftDefault";
     src: url("/assets/font/MinecraftDefault-Regular.ttf") format("truetype");
@@ -61,16 +82,6 @@
     font-weight: bold;
     font-style: italic;
     src: url("/assets/font/Poppins-BoldItalic.ttf");
-}
-
-:root {
-    --dark-purple: #08030c;
-    --purple: #550285;
-    --accent-yellow-1: #ffd541;
-    --accent-yellow-2: #f9a31b;
-    --accent-yellow-3: #a34507;
-    --font-gradient-yellow-start: #fffffe;
-    --font-gradient-yellow-end: #fff703;
 }
 
 /*

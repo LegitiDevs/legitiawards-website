@@ -3,6 +3,7 @@
 	import { page } from '$app/state';
 	import Footer from '#lib/components/Footer.svelte';
 	import '#lib/global.css';
+	import "layerchart/core.css";
 
 	let { children } = $props();
 
