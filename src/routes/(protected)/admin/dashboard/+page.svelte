@@ -1,11 +1,13 @@
 <script lang="ts">
-	import { CURRENT_EVENT } from "#lib/constants.ts";
+	import { CURRENT_EVENT, LEGITIMOOSE_API } from "#lib/constants.ts";
 	import { adminStore } from "#lib/stores/session.ts";
 	import { onMount } from "svelte";
 	import type { Categories } from "../../../api/categories/+server";
 	import type { Votes } from "#lib/schemas/voting.ts";
 	import TabContainer from "./TabContainer.svelte";
 	import Tab from "./Tab.svelte";
+  import "./layout.css";
+	import { BarChart } from "layerchart";
 
   let nominations = $state<Votes[]>();
   let categories = $state<Categories>()
@@ -15,10 +17,29 @@
       headers: { 'Authorization': adminStore.current.password! }
     })
     nominations = await nominationsRes.json();
+
+    const categoriesRes = await fetch('/api/categories')
+    categories = await categoriesRes.json();
   })
 
-  function wait(data: any) {
-    return data == undefined ? "..." : data
+  function wait<Data, Fallback>(data: Data, fallback: Fallback = "..." as any) {
+    return data == undefined ? fallback : data
+  }
+
+  function countNominees(nominees: string[]) {
+    let counter: {[k: string]: number} = {};
+
+    for (const nominee of nominees) {
+      counter[nominee] ??= 0
+      counter[nominee]++
+    }
+
+    let grouped = [];
+    for (const [nominee, count] of Object.entries(counter)) {
+      grouped.push({ nominee, count })
+    }
+
+    return grouped
   }
 </script>
 
@@ -36,20 +57,40 @@
     <p class="data">{wait(nominations?.length)}</p>
   </div>
   <div class="block full-row">
-    <h2>ae</h2>
+    <h2 class="big">Nominations</h2>
     <TabContainer>
-      <Tab id="tab1">
-        <h1>this is tab 1</h1>
-        <p>foo</p>
-      </Tab>
-      <Tab id="tab2">
-        <h1>this is tab 2</h1>
-        <p>bar</p>
-      </Tab>
-      <Tab id="tab3">
-        <h1>this is tab 3</h1>
-        <p>baz</p>
-      </Tab>
+    {let categoryObj = $derived(wait(categories?.categories, {}))}
+    {let categoryKeys = $derived(Object.keys(categoryObj)) as (keyof Votes['categories'])[]}
+      {#each categoryKeys as categoryName}
+        <Tab id={categoryName}>
+          <h3><code>{categoryName}</code></h3>
+
+          {const loadedNominations = $derived(wait(nominations, []))}
+          {const categoryNominations = $derived(loadedNominations.map(v => v.categories[categoryName]))}
+          {const data = $derived(countNominees(categoryNominations))}
+          <BarChart 
+            {data} 
+            x="count" 
+            y="nominee" 
+            orientation="horizontal"
+            labels
+            axis="y"
+            rule={false}
+            height={500}
+            props={{
+              yAxis: {
+                tickLabelProps: {
+                  textAnchor: 'start',
+                  dx: 6,
+                  dy: 2,
+                  style: 'color: black; font-size: 1em;'
+                },
+                tickLength: 0
+              }
+            }}
+          />
+        </Tab>
+      {/each}
     </TabContainer>
   </div>
 </div>
@@ -69,34 +110,5 @@
     padding: 2rem;
     gap: 1rem;
     background-color: rgb(17, 23, 19);
-  }
-
-  .block {
-    background-color: transparent;
-    outline: 1px rgb(255, 255, 255, 0.2) solid;
-    padding: 1rem;
-    border-radius: 8px;
-    height: max-content;
-
-    &.no-outline { outline: none; }
-    &.full-row { grid-column: 1 / -1; }
-
-    h2 {
-      font-size: 1rem;
-      font-weight: normal;
-    }
-
-    p.data {
-      font-size: 2rem;
-    }
-  }
-
-  code {
-    background-color: rgb(10, 10, 10);
-    outline: 1px rgb(255, 255, 255, 0.1) solid;
-    padding-block: 0.2rem;
-    padding-inline: 0.3rem;
-    border-radius: 4px;
-    font-family: 'Cascadia Code', 'Consolas';
   }
 </style>

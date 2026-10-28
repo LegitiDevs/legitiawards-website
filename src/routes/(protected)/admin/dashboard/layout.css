@@ -1,0 +1,35 @@
+.block {
+  background-color: transparent;
+  outline: 1px rgb(255, 255, 255, 0.2) solid;
+  padding: 1rem;
+  border-radius: 8px;
+  height: max-content;
+
+  &.no-outline {
+    outline: none;
+  }
+
+  &.full-row {
+    grid-column: 1 / -1;
+  }
+
+  h2 {
+    font-size: 1rem;
+    font-weight: normal;
+
+    &.big { font-size: 1.2rem; }
+  }
+
+  p.data {
+    font-size: 2rem;
+  }
+}
+
+code {
+  background-color: rgb(10, 10, 10);
+  outline: 1px rgb(255, 255, 255, 0.1) solid;
+  padding-block: 0.2rem;
+  padding-inline: 0.3rem;
+  border-radius: 4px;
+  font-family: 'Cascadia Code', 'Consolas';
+}

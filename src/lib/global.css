@@ -9,13 +9,7 @@
 }
 
 .lc-root-container, .lc-tooltip-root {
-    --color-primary: var(--purple);
     --color-surface-100: transparent;
-    --color-surface-200: var(--dark-purple);
-    --color-surface-300: var(--dark-purple);
-    --color-surface-content: var(--purple);
-    --tw-gradient-from: var(--accent-yellow-1);
-    --tw-gradient-to: var(--accent-yellow-3);
     font-family: 'Poppins';
 }
 
