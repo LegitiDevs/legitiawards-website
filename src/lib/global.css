@@ -8,7 +8,7 @@
     --font-gradient-yellow-end: #fff703;
 }
 
-.lc-root-container {
+.lc-root-container, .lc-tooltip-root {
     --color-primary: var(--purple);
     --color-surface-100: transparent;
     --color-surface-200: var(--dark-purple);

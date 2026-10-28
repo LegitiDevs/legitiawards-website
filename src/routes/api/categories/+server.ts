@@ -7,14 +7,16 @@ type CategoryMetadata = {
     description: string
 }
 
+export type Categories = {
+    order: string[];
+    categories: { [k: string]: CategoryMetadata };
+}
+
 export const GET = async () => {
-    const categoriesJson: {
-			order: string[];
-			categories: { [k: string]: CategoryMetadata };
-		} = {
-			...categoryRegistry.get(categories.cla2027) as { order: string[] },
-			categories: {},
-		};
+    const categoriesJson: Categories = {
+        ...categoryRegistry.get(categories.cla2027) as { order: string[] },
+        categories: {},
+    };
 
     const schemaShape = categories.cla2027.shape;
     

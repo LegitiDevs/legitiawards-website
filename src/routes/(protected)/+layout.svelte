@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { adminStore } from "#lib/stores/session.ts";
 	import { goto, refreshAll } from "$app/navigation";
-	import { untrack } from "svelte";
+	import { onMount } from "svelte";
 
   async function verifyPassword(password: string) {
     const verifyRes = await fetch('/api/admin/verify-password', {
@@ -43,10 +43,8 @@
 
   let unlocked = $state(false);
 
-  $effect.pre(() => {
-    untrack(() => {
-      askPassword().then(v => { unlocked = v; })
-    })
+  onMount(async () => {
+    unlocked = await askPassword();
   })
 
   let { children } = $props();
@@ -54,4 +52,19 @@
 
 {#if unlocked}
   {@render children()}
+{:else}
+  <div class="unauthorized-container">
+    <p>Checking password...</p>
+  </div>
 {/if}
+
+<style>
+  .unauthorized-container {
+    display: grid;
+    place-items: center;
+    height: 100vh;
+    background-color: #000;
+    color: white;
+    font-size: 3em;
+  }
+</style>
