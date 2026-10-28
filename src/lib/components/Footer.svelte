@@ -35,7 +35,7 @@
         flex-direction: column;
         background-color: #131114;
         color: #fff;
-        min-height: 30vmin;
+        height: 100vh;
         padding: 25px 25px 50px 25px;
         font-family: 'Poppins', 'Helvetica';
 
