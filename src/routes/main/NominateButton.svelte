@@ -10,7 +10,9 @@
         left: 50%;
         transform: translate(-50%);
 
-        padding: 20px;
+        padding-top: 15px;
+        padding-bottom: 20px;
+        padding-inline: 20px;
 
         background-color: rgb(243, 178, 38);
         box-shadow: 
@@ -39,21 +41,20 @@
                 0 10px 0 9px white;
         }
 
-        font-family: 'MinecraftTen';
+        font-family: 'MinecraftFive';
         font-size: 2.5rem;
         text-decoration: none;
         text-align: center;
         color: white;
         line-height: 0.75;
-        text-shadow: 2px 2px rgba(143, 50, 7, 0.5);
-        letter-spacing: 2px;
+        text-shadow: 0px 4px rgba(143, 50, 7, 0.5);
         -webkit-font-smoothing: none;
         image-rendering: pixelated;
 
         animation: 1s ease-in-out 1s flyUp backwards;
 
-        @media (max-width: 800px) {
-            font-size: 2rem;
+        @media (max-width: 48rem) {
+            font-size: 1.25rem;
             letter-spacing: 0px;
             line-height: 1;
             padding: 5px;

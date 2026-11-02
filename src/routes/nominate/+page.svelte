@@ -120,24 +120,7 @@
         }
     )
 
-    let nominationVotes: Partial<{[k in keyof Votes['categories']]: any}> = $state({
-        communitys_voice: {name: "Trplnr", uuid: "7036f914-10c8-44cc-848a-7a3980964496"},
-        most_promising_player: {name: "Trplnr", uuid: "7036f914-10c8-44cc-848a-7a3980964496"},
-        best_artist: {name: "Trplnr", uuid: "7036f914-10c8-44cc-848a-7a3980964496"},
-        best_developer: {name: "Trplnr", uuid: "7036f914-10c8-44cc-848a-7a3980964496"},
-        best_team: {name: "Trplnr", uuid: "Trplnr"},
-        creator_of_the_year: {name: "Trplnr", uuid: "7036f914-10c8-44cc-848a-7a3980964496"},
-        still_playing: {name: "Trplnr", uuid: "3b831533-caf3-4e4d-871d-6b4a83945d77", subtitle: "by Trplnr"},
-        most_captivating_world: {name: "Trplnr", uuid: "3b831533-caf3-4e4d-871d-6b4a83945d77", subtitle: "by Trplnr"},
-        best_sandbox_game: {name: "Trplnr", uuid: "3b831533-caf3-4e4d-871d-6b4a83945d77", subtitle: "by Trplnr"},
-        best_party_game: {name: "Trplnr", uuid: "3b831533-caf3-4e4d-871d-6b4a83945d77", subtitle: "by Trplnr"},
-        best_fighting: {name: "Trplnr", uuid: "3b831533-caf3-4e4d-871d-6b4a83945d77", subtitle: "by Trplnr"},
-        best_in_tech: {name: "Trplnr", uuid: "3b831533-caf3-4e4d-871d-6b4a83945d77", subtitle: "by Trplnr"},
-        best_in_fun: {name: "Trplnr", uuid: "3b831533-caf3-4e4d-871d-6b4a83945d77", subtitle: "by Trplnr"},
-        best_in_aesthetics: {name: "Trplnr", uuid: "3b831533-caf3-4e4d-871d-6b4a83945d77", subtitle: "by Trplnr"},
-        most_innovative: {name: "Trplnr", uuid: "3b831533-caf3-4e4d-871d-6b4a83945d77", subtitle: "by Trplnr"},
-        world_of_the_year: {name: "Trplnr", uuid: "3b831533-caf3-4e4d-871d-6b4a83945d77", subtitle: "by Trplnr"},
-    });
+    let nominationVotes: Partial<{[k in keyof Votes['categories']]: any}> = $state({});
 
     function setNomination(nominationInfo: any) {
         nominationVotes[currentName] = nominationInfo;
@@ -161,7 +144,7 @@
         } else if (newIndex >= categories.order.length) {
             // past voting page, go to summary
             pageState = "summary";
-            currentIndex = categories.order.length - 1;
+            currentIndex = categories.order.length;
         }
     }
 
@@ -289,6 +272,7 @@
 
         display: flex;
         flex-direction: row;
+        @media (max-width: 48rem) { flex-direction: column; }
         justify-content: center;
         align-items: center;
 
@@ -310,6 +294,15 @@
         height: 100vh;
 
         text-align: left;
+
+        @media (max-width: 48rem) {
+            background-image: linear-gradient(to bottom, #8a650233, transparent);
+            border-top: var(--accent-yellow-1) solid 5px;
+            border-left: none;
+            padding: 25px;
+            height: 50vh;
+        }
+
 
         .category-title {
             z-index: 1;
@@ -378,6 +371,7 @@
         gap: 50px;
 
         padding: 50px;
+        @media (max-width: 48rem) { padding-inline: 25px; }
 
         font-family: 'MinecraftDefault';
         color: white;
@@ -397,10 +391,16 @@
             gap: 20px;
             align-items: center;
 
+            
             .title {
                 justify-self: end;
                 font-family: 'MinecraftTen';
                 color: var(--accent-yellow-1);
+            }
+
+            @media (max-width: 48rem) { 
+                grid-template-columns: 1fr;
+                .title { justify-self: start; }
             }
         }
 
@@ -429,16 +429,22 @@
 
             transition: scale 0.2s ease, filter 0.2s ease, padding 0.2s ease;
 
-            &:hover {
-                scale: 1.1;
-                filter: brightness(1.05);
-                padding-inline: 30px;
-            }
+            cursor: pointer;
 
-            &:active {
-                scale: 0.85;
-                filter: brightness(1.05);
-                padding-inline: 30px;
+            &:hover {
+                background-color: rgb(255, 197, 73);
+
+                box-shadow: 
+                    -3px -3px rgb(255, 213, 98),
+                    3px 3px rgb(255, 213, 98),
+                    -3px 3px rgb(255, 213, 98),
+                    3px -3px rgb(255, 213, 98),
+                    0 0 0 3px rgb(255, 197, 73),
+                    0 10px 0 3px rgb(209, 109, 14),
+                    0 0 0 6px black,
+                    0 10px 0 6px black,
+                    0 0 0 9px white,
+                    0 10px 0 9px white;
             }
         }
     }
