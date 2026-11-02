@@ -266,7 +266,7 @@
 
 <style>
     .main-section {
-        height: 100vh;
+        min-height: 100vh;
         background-image: url('/assets/img/cyan_background.png');
         background-position: center;
         background-size: 100%;

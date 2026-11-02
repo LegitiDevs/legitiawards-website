@@ -63,10 +63,6 @@ export const categories = {
 				title: "Best Team",
 				description: "The team of creators that have worked together and combined their creativity and talent to make amazing creations.",
 			}),
-			best_promising_player: PlayerSchema.clone().register(categoryRegistry, {
-				title: "Best Promising Player",
-				description: "The player who has recently achieved a significant breakthrough in community perception and has made creations that impacted legitimoose.com.",
-			}),
 			best_developer: PlayerSchema.clone().register(categoryRegistry, {
 				title: "Best Developer",
 				description: "The player who has the best expertise in handling the backend and logic of creations to fuel its magic and create functional experiences.",
@@ -75,6 +71,10 @@ export const categories = {
 				title: "Best Artist",
 				description: "The player with the most remarkable artistic skill, transforming an empty world into a surreal landscape of sight and sound.",
 			}),
+			best_promising_player: PlayerSchema.clone().register(categoryRegistry, {
+				title: "Best Promising Player",
+				description: "The player who has recently achieved a significant breakthrough in community perception and has made creations that impacted legitimoose.com.",
+			}),
 			communitys_voice: PlayerSchema.clone().register(categoryRegistry, {
 				title: "Community's Voice",
 				description: "The player the community wants to celebrate for their positive impact and contributions for the Legitimoose community.",
@@ -82,10 +82,21 @@ export const categories = {
 		})
 		.register(categoryRegistry, {
 			order: [
+				"communitys_voice",
+				"best_promising_player",
+				"best_artist",
+				"best_developer",
 				"best_team",
-				"best_music",
+				"creator_of_the_year",
+				"still_playing",
+				"most_captivating_world",
+				"best_sandbox_game",
+				"best_party_game",
 				"best_fighting",
-				"player_of_the_year",
+				"best_in_tech",
+				"best_in_fun",
+				"best_in_aesthetics",
+				"most_innovative",
 				"world_of_the_year",
 			],
 		}),
