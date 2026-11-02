@@ -41,7 +41,7 @@
 
   p.error-code-container {
     font-size: 0.8rem;
-    opacity: 0.35;
+    opacity: 0.2;
     margin-block: 1rem;
   }
 </style>

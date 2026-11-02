@@ -1,6 +1,5 @@
 <script lang="ts">
     import { CURRENT_EVENT, LEGITIMOOSE_API, PLAYERDB_MC } from "#lib/constants.ts";
-	import GoldLine from "#lib/components/GoldLine.svelte";
 	import LegitiAwardsButton from "#lib/components/LegitiAwardsButton.svelte";
 	import type { Votes } from "#lib/schemas/voting.ts";
 	import { onMount } from "svelte";
@@ -121,7 +120,24 @@
         }
     )
 
-    let nominationVotes: Partial<{[k in keyof Votes['categories']]: any}> = $state({});
+    let nominationVotes: Partial<{[k in keyof Votes['categories']]: any}> = $state({
+        communitys_voice: {name: "Trplnr", uuid: "7036f914-10c8-44cc-848a-7a3980964496"},
+        most_promising_player: {name: "Trplnr", uuid: "7036f914-10c8-44cc-848a-7a3980964496"},
+        best_artist: {name: "Trplnr", uuid: "7036f914-10c8-44cc-848a-7a3980964496"},
+        best_developer: {name: "Trplnr", uuid: "7036f914-10c8-44cc-848a-7a3980964496"},
+        best_team: {name: "Trplnr", uuid: "Trplnr"},
+        creator_of_the_year: {name: "Trplnr", uuid: "7036f914-10c8-44cc-848a-7a3980964496"},
+        still_playing: {name: "Trplnr", uuid: "3b831533-caf3-4e4d-871d-6b4a83945d77", subtitle: "by Trplnr"},
+        most_captivating_world: {name: "Trplnr", uuid: "3b831533-caf3-4e4d-871d-6b4a83945d77", subtitle: "by Trplnr"},
+        best_sandbox_game: {name: "Trplnr", uuid: "3b831533-caf3-4e4d-871d-6b4a83945d77", subtitle: "by Trplnr"},
+        best_party_game: {name: "Trplnr", uuid: "3b831533-caf3-4e4d-871d-6b4a83945d77", subtitle: "by Trplnr"},
+        best_fighting: {name: "Trplnr", uuid: "3b831533-caf3-4e4d-871d-6b4a83945d77", subtitle: "by Trplnr"},
+        best_in_tech: {name: "Trplnr", uuid: "3b831533-caf3-4e4d-871d-6b4a83945d77", subtitle: "by Trplnr"},
+        best_in_fun: {name: "Trplnr", uuid: "3b831533-caf3-4e4d-871d-6b4a83945d77", subtitle: "by Trplnr"},
+        best_in_aesthetics: {name: "Trplnr", uuid: "3b831533-caf3-4e4d-871d-6b4a83945d77", subtitle: "by Trplnr"},
+        most_innovative: {name: "Trplnr", uuid: "3b831533-caf3-4e4d-871d-6b4a83945d77", subtitle: "by Trplnr"},
+        world_of_the_year: {name: "Trplnr", uuid: "3b831533-caf3-4e4d-871d-6b4a83945d77", subtitle: "by Trplnr"},
+    });
 
     function setNomination(nominationInfo: any) {
         nominationVotes[currentName] = nominationInfo;
@@ -169,13 +185,14 @@
             body: JSON.stringify(nominationVotesToSend)
         })
 
+        if (submitRes.status == 403 || submitRes.status == 409) {
+            await refreshAll();
+            return;
+        }
+
         // Something went wrong, show error page or refresh to show updated info.
         if (!submitRes.ok) {
             // Nominations closed or already submitted.
-            if (submitRes.status == 403 || submitRes.status == 409) {
-                await refreshAll();
-                return;
-            }
 
             const hasJson = submitRes.headers.get('content-type')?.includes('application/json');
             submitError = {
@@ -186,9 +203,6 @@
             pageState = "error";
             return;
         }
-
-        // everything went well, show success screen
-        pageState = "success";
     }
 </script>
  
@@ -243,7 +257,11 @@
     <button class="arrows back-arrow" onclick={() => switchPage(-1)}>&larr;</button>
 
     <div class="summary-container">
-        <p>You nominated:</p>
+        <div class="summary-title">
+            <h1>Summary</h1>
+            <p style="margin-top: 1rem;">Review your nominations and submit!</p>
+        </div>
+        <p>You nominated</p>
         <div class="nomination-list-container">
             {#each categories.order as categoryName}
                 <span class="title">{categories.categories[categoryName].title}</span>
@@ -252,8 +270,6 @@
         </div>
         <button class="submit-button" onclick={submitNominations}>Submit</button>
     </div>
-{:else if pageState == "success"}
-    <span>thanks for voting tysm!!!</span>
 {:else if pageState == "error"}
     <h1>Something went wrong :&lpar;</h1>
     <h2>{submitError.status}</h2>
@@ -361,10 +377,19 @@
         align-items: center;
         gap: 50px;
 
+        padding: 50px;
+
         font-family: 'MinecraftDefault';
         color: white;
         font-size: 2em;
         line-height: normal;
+
+        .summary-title {
+            padding: 1rem;
+            background-image: linear-gradient(to right, #8a650233 75%, transparent 100%);
+            border-left: var(--accent-yellow-1) solid 5px;
+            width: 100%;
+        }
 
         .nomination-list-container {
             display: grid;
@@ -375,6 +400,45 @@
             .title {
                 justify-self: end;
                 font-family: 'MinecraftTen';
+                color: var(--accent-yellow-1);
+            }
+        }
+
+        .submit-button {
+            all: unset;
+
+            background-color: rgb(243, 178, 38);
+            box-shadow: 
+                -3px -3px rgb(255, 207, 74),
+                3px 3px rgb(255, 207, 74),
+                -3px 3px rgb(255, 207, 74),
+                3px -3px rgb(255, 207, 74),
+                0 0 0 3px rgb(243, 178, 38),
+                0 10px 0 3px rgb(209, 109, 14),
+                0 0 0 6px black,
+                0 10px 0 6px black;
+
+            padding-inline: 20px;
+            padding-top: 5px;
+            padding-bottom: 8px;
+            line-height: normal;
+
+            font-family: 'MinecraftFive';
+            color: white;
+            text-shadow: 0px 4px rgba(143, 50, 7, 0.5);
+
+            transition: scale 0.2s ease, filter 0.2s ease, padding 0.2s ease;
+
+            &:hover {
+                scale: 1.1;
+                filter: brightness(1.05);
+                padding-inline: 30px;
+            }
+
+            &:active {
+                scale: 0.85;
+                filter: brightness(1.05);
+                padding-inline: 30px;
             }
         }
     }
