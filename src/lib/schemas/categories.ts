@@ -72,7 +72,7 @@ export const categories = {
 				description: "The player with the most remarkable artistic skill, transforming an empty world into a surreal landscape of sight and sound.",
 			}),
 			most_promising_player: PlayerSchema.clone().register(categoryRegistry, {
-				title: "Best Promising Player",
+				title: "Most Promising Player",
 				description: "The player who has recently achieved a significant breakthrough in community perception and has made creations that impacted legitimoose.com.",
 			}),
 			communitys_voice: PlayerSchema.clone().register(categoryRegistry, {
