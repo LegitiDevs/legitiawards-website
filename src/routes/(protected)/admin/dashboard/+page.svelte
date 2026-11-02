@@ -100,7 +100,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-auto-rows: max-content;
-    @media (max-width: 48rem) { grid-template-columns: 1fr; }
+    @media (max-width: 48rem) { grid-template-columns: 1fr 1fr; }
 
     min-height: 100vh;
 
