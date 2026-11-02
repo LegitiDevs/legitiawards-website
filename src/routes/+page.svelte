@@ -6,6 +6,11 @@
 	import PastWinnersSection from "./main/PastWinnersSection.svelte";
 </script>
 
+<svelte:head>
+    <link rel="preload" href="/assets/img/purple_background.png" as="image" />
+	<link rel="preload" href="/assets/img/rendered_reef.png" as="image" />
+</svelte:head>
+
 <LegitiDevsButton />
 <HeroSection />
 <GoldLine />

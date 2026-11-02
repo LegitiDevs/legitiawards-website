@@ -197,15 +197,14 @@
 {#if pageState == "loading"}
     <span>...</span>
 {:else if pageState == "voting"}
+    {#key currentIndex}
     <div class="category-info-container">
-        <div class="category-info-wrapper">
-            <div class="category-title">{currentCategory.title}</div>
-            <div class="category-description">{currentCategory.description}</div>
-        </div>
-    </div>  
-    <GoldLine orientation="vertical" thickness="10px" />
+        <p class="category-title">{currentCategory.title}</p>
+        <p class="category-description">{currentCategory.description}</p>
+    </div>
+    {/key}
     <div class="input-container">
-        {#if nominationVotes[currentName]}
+        {#if nominationVotes[currentName] && searchValue.length == 0}
             {#key currentIndex}
                 <PickedNomineeVisual 
                     title={nominationVotes[currentName]?.name}
@@ -221,7 +220,7 @@
                     <span>Loading...</span>
                 {:else if searchResults.error}
                     <span>An error occured: {searchResults.error.message}</span>
-                {:else}
+                {:else if searchValue.length > 0}
                     {#each searchResults.current ?? [] as value}
                         <SuggestionBox
                             title={value?.name}
@@ -256,7 +255,7 @@
 {:else if pageState == "success"}
     <span>thanks for voting tysm!!!</span>
 {:else if pageState == "error"}
-    <h1>Something went wrong &lpar;</h1>
+    <h1>Something went wrong :&lpar;</h1>
     <h2>{submitError.status}</h2>
     {#if submitError.json != null}
         <span>{submitError.json}</span>
@@ -266,7 +265,6 @@
 
 <style>
     .main-section {
-        min-height: 100vh;
         background-image: url('/assets/img/cyan_background.png');
         background-position: center;
         background-size: 100%;
@@ -278,73 +276,81 @@
         justify-content: center;
         align-items: center;
 
-        > div {
-            flex: 1;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-        }
+        min-height: 100vh;
+        
+        > div { flex: 1; }
     }
 
     .category-info-container {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: center;
-        align-items: center;
-        background-image: linear-gradient(to left, #271d0233, #a18a0722);
+        align-items: flex-start;
 
-        .category-info-wrapper {
-            justify-content: center;
-            align-items: start;
-            padding: 50px;
-            max-width: 90%;
+        background-image: linear-gradient(to right, #8a650233, transparent);
+        border-left: var(--accent-yellow-1) solid 5px;
+        padding: 50px;
 
-            .category-title {
-                font-family: 'MinecraftTen', 'Cascadia Code';
-                font-size: calc(4vw + 1rem);
-                line-height: 1;
+        height: 100vh;
 
-                color: #4effb8;
-                text-shadow: 0 0.8vw #05120d;
+        text-align: left;
 
-                padding-bottom: 1.25vw;
-            }
+        .category-title {
+            z-index: 1;
+            font-family: 'MinecraftTen', 'Cascadia Code';
+            font-size: calc(4vw + 1rem);
+            line-height: 1;
 
-            .category-description {
-                font-family: 'MinecraftDefault', 'Cascadia Code';
-                font-size: 1.8vw;
-                color: white;
-                line-height: 2vw;
-            }
+            color: #4effb8;
+            text-shadow: 0 0.8vw #05120d;
+
+            padding-bottom: 1.25vw;
+        }
+
+        .category-description {
+            z-index: 1;
+            font-family: 'MinecraftDefault', 'Cascadia Code';
+            font-size: calc(0.5vw + 1rem);
+            color: white;
+            line-height: normal;
         }
     }
 
-    .category-info-wrapper, .input-container {
+    .input-container {
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        align-items: center;
         gap: 50px;
-    }
 
-    .picker-container {
-        display: flex;
-        flex-direction: column;
-        width: 70%;
-        gap: 10px;
-
-        .search-container {
+        .picker-container {
             display: flex;
             flex-direction: column;
-            width: 100%;
-            gap: 5px;
-            padding: 12px;
+            width: 70%;
+            gap: 10px;
 
-            max-height: 400px;
-            overflow-y: scroll;
-            scroll-behavior: smooth;
-            scrollbar-color: #131314 transparent;
-            scrollbar-width: none;
+            .search-container {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                gap: 5px;
+                padding: 12px;
 
-            mask-image: linear-gradient(to bottom, rgb(0, 0, 0, 0.75) 0%, black 10%, black 90%, rgb(0, 0, 0, 0.5) 100%);
+                max-height: 400px;
+                overflow-y: scroll;
+                scroll-behavior: smooth;
+                scrollbar-color: #131314 transparent;
+                scrollbar-width: none;
+
+                mask-image: linear-gradient(to bottom, rgb(0, 0, 0, 0.75) 0%, black 10%, black 90%, rgb(0, 0, 0, 0.5) 100%);
+
+                span {
+                    text-align: center;
+                    font-family: 'MinecraftFive';
+                    color: white;
+                    opacity: 0.5;
+                }
+            }
         }
     }
 
@@ -379,20 +385,22 @@
         position: absolute;
         top: 50%;
         translate: 0 -50%;
+        font-family: 'MinecraftDefault';
         color: white;
+        
+        transition: opacity 0.2s ease, scale 0.2s ease;
 
-        animation: fadeIn 0.3s ease-in both;
-
-        &.back-arrow { left: 1rem; }
-        &.forward-arrow { right: 1rem; }
-    }
-
-    @keyframes fadeIn {
-        0% {
-            opacity: 0;
+        &.back-arrow { 
+            left: 1.5rem;
+            opacity: 0.5;
+            scale: 2;
+            &:hover { opacity: 1; }
         }
-        100% {
-            opacity: 1;
+        &.forward-arrow { 
+            right: 1.5rem; 
+            color: var(--accent-yellow-1);
+            scale: 3;
+            &:hover { scale: 3.5; }
         }
     }
 </style>
