@@ -9,6 +9,8 @@
   import "./layout.css";
 	import { BarChart } from "layerchart";
 
+  // lmfao this code is so horrible
+
   let nominations = $state<Votes[]>();
   let categories = $state<Categories>()
 
