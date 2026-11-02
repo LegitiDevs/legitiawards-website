@@ -71,7 +71,7 @@ export const categories = {
 				title: "Best Artist",
 				description: "The player with the most remarkable artistic skill, transforming an empty world into a surreal landscape of sight and sound.",
 			}),
-			best_promising_player: PlayerSchema.clone().register(categoryRegistry, {
+			most_promising_player: PlayerSchema.clone().register(categoryRegistry, {
 				title: "Best Promising Player",
 				description: "The player who has recently achieved a significant breakthrough in community perception and has made creations that impacted legitimoose.com.",
 			}),
@@ -83,7 +83,7 @@ export const categories = {
 		.register(categoryRegistry, {
 			order: [
 				"communitys_voice",
-				"best_promising_player",
+				"most_promising_player",
 				"best_artist",
 				"best_developer",
 				"best_team",
