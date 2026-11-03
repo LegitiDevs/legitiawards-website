@@ -37,15 +37,14 @@ export const POST = withSchema(
 
         const insertResult = await nominationsCollection.insertOne({
             ...body,
-            hashed_ip
+            hashed_ip,
+            submitted_at: new Date()
         })
 
         const submittedNominees = await nominationsCollection.findOne(
             { _id: insertResult.insertedId },
             { projection: { _id: 0, hashed_ip: 0 } },
         );
-
-        console.log(insertResult)
 
         return Response.json(submittedNominees);
     }

@@ -29,6 +29,8 @@
   .tab-container {
     padding: 0;
     border-top-left-radius: 0;
+
+    --max-tab-button-width: 10rem;
   }
 
   .button-row {
@@ -49,6 +51,10 @@
       padding-block: 0.35rem;
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
+
+      max-width: var(--max-tab-button-width, max-content);
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       &.active {
         background-color: rgb(0, 0, 0, 0.5);

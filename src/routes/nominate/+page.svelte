@@ -94,20 +94,22 @@
  
                     if (playerDBRes.ok) {
                         const playerDBJSON = await playerDBRes.json();
-                        if (values.some(v => v.uuid == playerDBJSON.data.player.id)) return values;
-                        values.push({
-                            name: playerDBJSON.data.player.username,
-                            uuid: playerDBJSON.data.player.id
-                        })
-                    }
- 
-                    return values.map(v => {
-                        return {
+                        if (values.some(v => v.uuid == playerDBJSON.data.player.id)) return values.map(v => ({
                             name: v.name,
                             uuid: v.uuid,
                             icon: `https://mc-heads.net/head/${v.uuid}/left`
-                        }
-                    });
+                        }));
+                        values.push({
+                            name: playerDBJSON.data.player.username,
+                            uuid: playerDBJSON.data.player.id,
+                        })
+                    }
+ 
+                    return values.map(v => ({
+                        name: v.name,
+                        uuid: v.uuid,
+                        icon: `https://mc-heads.net/head/${v.uuid}/left`
+                    }));
                 }
                 case "any": {
                     return [{ name: value, uuid: value }]
@@ -186,6 +188,9 @@
             pageState = "error";
             return;
         }
+
+        await refreshAll();
+        return;
     }
 </script>
  

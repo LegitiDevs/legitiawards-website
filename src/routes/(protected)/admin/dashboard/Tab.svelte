@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, type Snippet } from "svelte";
+	import { onDestroy, onMount, type Snippet } from "svelte";
 	import { getTabContext } from "./tabcontext";
 
   type Props = { id: string, children?: Snippet }
@@ -9,12 +9,12 @@
   let tabContext = getTabContext();
 
   onMount(() => {
-    tabContext.tabIds.push(id)
+    tabContext.tabIds.push(id) 
+  })
 
-    return () => {
-      const index = tabContext.tabIds.findIndex(v => v == id)
-      if (index != -1) tabContext.tabIds.splice(index, 1)
-    }
+  onDestroy(() => {
+    const index = tabContext.tabIds.findIndex(v => v == id)
+    if (index != -1) tabContext.tabIds.splice(index, 1)
   })
 </script>
 

@@ -1,5 +1,6 @@
 import { MONGODB_URI, DB_NAME } from "$app/env/private";
 import { MongoClient } from "mongodb";
+import type { NominationsDocument } from "./schemas/collections";
 
 if (MONGODB_URI == undefined) {
     throw new TypeError('Missing `MONGODB_URI` in private environment variables.');
@@ -11,5 +12,5 @@ if (DB_NAME == undefined) {
 
 export const client = new MongoClient(MONGODB_URI);
 export const db = client.db(DB_NAME);
-export const nominationsCollection = db.collection("nominations");
+export const nominationsCollection = db.collection<NominationsDocument>("nominations");
 export const adminCollection = db.collection("admin");

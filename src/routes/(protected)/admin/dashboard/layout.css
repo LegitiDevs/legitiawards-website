@@ -33,3 +33,36 @@ code {
   border-radius: 4px;
   font-family: 'Cascadia Code', 'Consolas';
 }
+
+button {
+  --bg-color: rgb(255, 255, 255, 0.1);
+  --bg-color-hover: rgb(255, 255, 255, 0.2);
+  --outline-color: rgb(255, 255, 255, 0.5);
+  --outline-color-hover: rgb(255, 255, 255, 1);
+
+  all: unset;
+  
+  background-color: var(--bg-color);
+  color: var(--outline-color-hover);
+  outline: 1px var(--outline-color) solid;
+  padding-inline: 0.5rem;
+  border-radius: 64px;
+
+  transition: background-color 0.1s ease, outline 0.1s ease;
+
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--bg-color-hover);
+    outline: 1px var(--outline-color-hover) solid;
+  }
+
+  &:active { cursor: default; }
+
+  &.danger {
+    --bg-color: rgb(255, 80, 80, 0.1);
+    --bg-color-hover: rgb(255, 80, 80, 0.2);
+    --outline-color: rgb(255, 100, 100, 0.5);
+    --outline-color-hover: rgb(255, 100, 100, 1);
+  }
+}
