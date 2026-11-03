@@ -6,7 +6,7 @@ WORKDIR /app
 
 COPY . .
 RUN pnpm install
-RUN pnpm run build
+RUN MONGODB_URI=mongodb://x DB_NAME=x ADMIN_PASSWORD=x pnpm run build
 
 EXPOSE 3008
 ENV PORT=3008
