@@ -10,7 +10,7 @@ import { VotesSchema } from "#lib/schemas/voting.ts";
 /** Submits nominations */
 export const POST = withSchema(
     { body: VotesSchema },
-    async ({ body, cookies, getClientAddress }) => {
+    async ({ request, body, cookies }) => {
 
         // -- Authorization
 
@@ -19,7 +19,7 @@ export const POST = withSchema(
         }
 
         const hasSubmitted = cookies.get("nominations.hasSubmitted") === "true";
-        const hashed_ip = crypto.hash("sha256", getClientAddress(), 'hex');
+        const hashed_ip = crypto.hash("sha256", request.headers.get("x-forwarded-for")!, 'hex');
 
         // Check if they alr submitted by checking cookies or seeing if their ip is in the DB.
 
