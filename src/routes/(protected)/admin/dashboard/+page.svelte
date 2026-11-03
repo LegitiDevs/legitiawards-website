@@ -12,13 +12,20 @@
 
   let nominations = $state<SerializedNominationsDocument[]>();
   let categories = $state<Categories>()
-  onMount(async () => { [nominations, categories] = await fetchInitialData(); })
+
+  async function refreshData() { 
+    [nominations, categories] = await fetchInitialData(); 
+  }
+
+  onMount(refreshData)
 </script>
 
 <div class="main-container">
   <div class="block no-outline full-row" style="padding-block: 2rem;">
     <h1>Admin Dashboard</h1>
     <p>Do not leak!</p>
+    <br />
+    <button onclick={refreshData}>Refresh data</button>
   </div>
   <div class="block">
     <h2>Current Event</h2>
@@ -34,7 +41,7 @@
       {#each nominations as nomination (nomination._id)}
         <NominationSubmissionTab 
           nomination={nomination}
-          ondelete={async () => { [nominations, categories] = await fetchInitialData(); }}
+          ondelete={refreshData}
         />
       {/each}
     </TabContainer>
