@@ -3,7 +3,7 @@
 	"compilerOptions": {
 		"sourceMap": true,
 		"strict": true,
-		"types": ["node"]
+		"types": ["$app/types", "node"]
 	},
 	"include": [
 		"src"
