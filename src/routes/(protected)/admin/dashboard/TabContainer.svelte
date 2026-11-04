@@ -46,15 +46,19 @@
 
     button {
       all: unset;
+
+      flex: 0 0 auto;
+
       line-height: normal;
       padding-inline: 1.5rem;
       padding-block: 0.35rem;
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
 
-      max-width: var(--max-tab-button-width, max-content);
       overflow: hidden;
       text-overflow: ellipsis;
+
+      max-width: var(--max-tab-button-width, max-content);
 
       &.active {
         background-color: rgb(0, 0, 0, 0.5);

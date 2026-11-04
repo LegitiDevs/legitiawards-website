@@ -26,3 +26,9 @@
     <p>{error.statusText}</p>
   {/if}
 </Tab>
+
+<style>
+  pre {
+    text-wrap: wrap;
+  }
+</style>

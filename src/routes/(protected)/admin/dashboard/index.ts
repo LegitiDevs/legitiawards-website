@@ -1,3 +1,4 @@
+import type { Votes } from "#lib/schemas/voting.ts";
 import { adminStore } from "#lib/stores/session.ts";
 
 export async function fetchInitialData() {
@@ -24,4 +25,22 @@ export async function deleteNomination(nominationId: string) {
   }
 
   return null 
+}
+
+type VoteCount = { id: string; votes: number };
+
+export function countCategoryValues(
+  items: Votes[],
+  field: keyof Votes['categories']
+): VoteCount[] {
+  const counts = new Map<string, number>();
+
+  for (const item of items) {
+    const value = item.categories[field];
+    counts.set(value, (counts.get(value) ?? 0) + 1);
+  }
+
+  return [...counts.entries()]
+    .map(([id, votes]) => ({ id, votes }))
+    .sort((a, b) => b.votes - a.votes);
 }
