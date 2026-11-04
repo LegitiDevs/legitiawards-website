@@ -7,9 +7,9 @@
 	import PickedNomineeVisual from "./PickedNomineeVisual.svelte";
 	import SuggestionBox from "./SuggestionBox.svelte";
     import { resource } from "runed";
-	import { refreshAll } from "$app/navigation";
+	import { goto, refreshAll } from "$app/navigation";
 
-    type PageState = "loading" | "voting" | "summary" | "submitting" | "error" | "success";
+    type PageState = "loading" | "intro" | "voting" | "summary" | "submitting" | "error" | "success";
     let pageState = $state<PageState>("loading");
 
     //-------------------------------------------------- DATA SETUP
@@ -35,7 +35,7 @@
         const res = await fetch("/api/categories");
         categories = await res.json();
  
-        pageState = "voting"
+        pageState = "intro"
     })
 
     //-------------------------------------------------- VOTING LOGIC
@@ -189,8 +189,8 @@
             return;
         }
 
-        await refreshAll();
-        return;
+        pageState = "success";
+        setTimeout(async () => {await goto("/")}, 3000)
     }
 </script>
  
@@ -198,6 +198,14 @@
 <div class="main-section">
 {#if pageState == "loading"}
     <span>...</span>
+{:else if pageState == "intro"}
+    <div class="summary-container">
+        <div class="summary-title">
+            <h1>The Community LegitiAwards 2027 Nominations</h1>
+            <p style="margin-top: 1rem; opacity: 0.5;">Note: your votes will not save if you exit out of this page.</p>
+        </div>
+        <button class="submit-button" onclick={() => {pageState = "voting"}}>Start</button>
+    </div>
 {:else if pageState == "voting"}
     {#key currentIndex}
     <div class="category-info-container">
@@ -258,12 +266,24 @@
         </div>
         <button class="submit-button" onclick={submitNominations}>Submit</button>
     </div>
+{:else if pageState == "success"}
+    <div class="summary-container">
+        <div class="summary-title">
+            <h1>Thank you for nominating!</h1>
+            <p style="margin-top: 1rem;">Stay tuned to get the latest updates about the ceremony.</p>
+            <p style="margin-top: 1rem;">You will be redirected back after a few seconds...</p>
+        </div>
+    </div>
 {:else if pageState == "error"}
-    <h1>Something went wrong :&lpar;</h1>
-    <h2>{submitError.status}</h2>
-    {#if submitError.json != null}
-        <span>{submitError.json}</span>
-    {/if}
+    <div class="summary-container">
+        <div class="summary-title">
+            <h1>Something went wrong :&lpar;</h1>
+            <h2>{submitError.status}</h2>
+            {#if submitError.json != null}
+                <span>{JSON.stringify(submitError.json)}</span>
+            {/if}
+        </div>
+    </div>
 {/if} 
 </div>
 

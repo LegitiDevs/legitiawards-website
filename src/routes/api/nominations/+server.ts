@@ -19,7 +19,7 @@ export const POST = withSchema(
         }
 
         const hasSubmitted = cookies.get("nominations.hasSubmitted") === "true";
-        const hashed_ip = crypto.hash("sha256", request.headers.get("x-forwarded-for")!, 'hex');
+        const hashed_ip = crypto.hash("sha256", request.headers.get("x-forwarded-for")! ?? "dev", 'hex');
 
         // Check if they alr submitted by checking cookies or seeing if their ip is in the DB.
 
