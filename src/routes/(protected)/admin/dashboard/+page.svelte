@@ -5,11 +5,12 @@
 	import TabContainer from "./TabContainer.svelte";
   import "./layout.css";
 	import type { SerializedNominationsDocument } from "#lib/schemas/collections.ts";
-	import { countCategoryValues, fetchInitialData } from ".";
+	import { countCategoryValues, fetchInitialData, getNomineeNames } from ".";
 	import NominationSubmissionTab from "./NominationSubmissionTab.svelte";
 	import Tab from "./Tab.svelte";
 	import { BarChart } from "layerchart";
 	import type { Votes } from "#lib/schemas/voting.ts";
+	import NominationsFrequencyTab from "./NominationsFrequencyTab.svelte";
 
   // lmfao this code is so horrible
 
@@ -50,36 +51,12 @@
     </TabContainer>
   </div>
   <div class="block full-row">
-    <h2 class="big">Nominations Graph</h2>
+    <h2 class="big">Nominations Frequency</h2>
     {#if categories}
     <TabContainer>
-      {#each Object.keys(categories?.categories) as category (category)}
-        <Tab id={category}>
-          <h2>{category}</h2>
-          {let data = $derived(countCategoryValues(nominations as Votes[], category as keyof Votes['categories']))}
-          <BarChart
-            {data}
-            x="votes"
-            y="id"
-            labels
-            orientation="horizontal"
-            axis="y"
-            rule={false}
-            props={{
-              yAxis: {
-                tickLabelProps: {
-                  textAnchor: 'start',
-                  dx: 6,
-                  dy: 2,
-                  style: 'color: black; font-size: clamp(10px, 1vw, 4rem);'
-                },
-                tickLength: 0
-              }
-            }}
-            padding={{ left: 0, bottom: 16 }}
-            height={500}
-          />
-        </Tab>
+      {#each Object.keys(categories.categories) as category (category)}
+        {let data = $derived(countCategoryValues(nominations as Votes[], category as keyof Votes['categories']))}
+        <NominationsFrequencyTab category={category} data={data} />
       {/each}
     </TabContainer>
     {/if}
